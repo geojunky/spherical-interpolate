@@ -14,20 +14,21 @@
 extern "C" {
 #endif
 #include "f2c.h"
+#include <stdio.h>
 
 /* Table of constant values */
 
 static integer c__1 = 1;
-static real c_b43 = (float)1.;
+static doublereal c_b43 = (double)1.;
 
-/* Subroutine */ int aplyr_(real *x, real *y, real *z__, real *cx, real *sx, 
-	real *cy, real *sy, real *xp, real *yp, real *zp)
+/* Subroutine */ int aplyr_(doublereal *x, doublereal *y, doublereal *z__, doublereal *cx, doublereal *sx, 
+	doublereal *cy, doublereal *sy, doublereal *xp, doublereal *yp, doublereal *zp)
 {
     /* Builtin functions */
     double sqrt(doublereal);
 
     /* Local variables */
-    static real t;
+    static doublereal t;
 
 
 /* *********************************************************** */
@@ -80,14 +81,14 @@ static real c_b43 = (float)1.;
     *yp = *cx * *y - *sx * *z__;
     *zp = *sy * *x + *cy * t;
     *xp = *cy * *x - *sy * t;
-    if (*zp >= (float)0.) {
+    if (*zp >= (double)0.) {
 	return 0;
     }
 
 /* Move (XP,YP,ZP) to the equator. */
 
     t = sqrt(*xp * *xp + *yp * *yp);
-    if (t == (float)0.) {
+    if (t == (double)0.) {
 	goto L1;
     }
     *xp /= t;
@@ -97,15 +98,15 @@ static real c_b43 = (float)1.;
 /* Move the south pole to an arbitrary point of the equator. */
 
 L1:
-    *xp = (float)1.;
-    *yp = (float)0.;
+    *xp = (double)1.;
+    *yp = (double)0.;
     return 0;
 } /* aplyr_ */
 
-/* Subroutine */ int aplyrt_(real *g1p, real *g2p, real *cx, real *sx, real *
-	cy, real *sy, real *g)
+/* Subroutine */ int aplyrt_(doublereal *g1p, doublereal *g2p, doublereal *cx, doublereal *sx, doublereal *
+	cy, doublereal *sy, doublereal *g)
 {
-    static real t;
+    static doublereal t;
 
 
 /* *********************************************************** */
@@ -159,8 +160,8 @@ L1:
     return 0;
 } /* aplyrt_ */
 
-/* Subroutine */ int arcint_(real *p, real *p1, real *p2, real *f1, real *f2, 
-	real *g1, real *g2, real *sigma, real *f, real *g, real *gn)
+/* Subroutine */ int arcint_(doublereal *p, doublereal *p1, doublereal *p2, doublereal *f1, doublereal *f2, 
+	doublereal *g1, doublereal *g2, doublereal *sigma, doublereal *f, doublereal *g, doublereal *gn)
 {
     /* Initialized data */
 
@@ -176,13 +177,13 @@ L1:
     /* Subroutine */ int s_stop(char *, ftnlen);
 
     /* Local variables */
-    static real a, e;
+    static doublereal a, e;
     static integer i__;
-    static real s, b1, b2, d1, d2, e1, e2, al, cm, gt, sm, tm, un[3], ts, cm2,
+    static doublereal s, b1, b2, d1, d2, e1, e2, al, cm, gt, sm, tm, un[3], ts, cm2,
 	     sb1, sb2, sm2, tm1, tm2, tp1, tp2, cmm, sig, ems, tau1, tau2, 
 	    sinh__, sinh2, dummy, unorm;
-    extern doublereal arclen_(real *, real *);
-    extern /* Subroutine */ int snhcsh_(real *, real *, real *, real *);
+    extern doublereal arclen_(doublereal *, doublereal *);
+    extern /* Subroutine */ int snhcsh_(doublereal *, doublereal *, doublereal *, doublereal *);
 
     /* Fortran I/O blocks */
     static cilist io___38 = { 0, 0, 0, fmt_100, 0 };
@@ -302,7 +303,7 @@ L1:
     un[1] = p1[3] * p2[1] - p1[1] * p2[3];
     un[2] = p1[1] * p2[2] - p1[2] * p2[1];
     unorm = sqrt(un[0] * un[0] + un[1] * un[1] + un[2] * un[2]);
-    if (unorm == (float)0.) {
+    if (unorm == (double)0.) {
 	goto L2;
     }
 
@@ -323,7 +324,7 @@ L1:
 /* Compute arc-lengths A, AL. */
 
     a = arclen_(&p1[1], &p2[1]);
-    if (a == (float)0.) {
+    if (a == (double)0.) {
 	goto L2;
     }
     al = arclen_(&p1[1], &p[1]);
@@ -331,7 +332,7 @@ L1:
 /* Compute local coordinates, slope, and second differences. */
 
     b2 = al / a;
-    b1 = (float)1. - b2;
+    b1 = (double)1. - b2;
     s = (*f2 - *f1) / a;
     d1 = s - tau1;
     d2 = tau2 - s;
@@ -339,13 +340,13 @@ L1:
 /* Test the range of SIGMA. */
 
     sig = dabs(*sigma);
-    if (sig < (float)1e-9) {
+    if (sig < (double)1e-9) {
 
 /* Hermite cubic interpolation. */
 
 	*f = *f1 + al * (tau1 + b2 * (d1 + b1 * (d1 - d2)));
-	gt = tau1 + b2 * (d1 + d2 + b1 * (float)3. * (d1 - d2));
-    } else if (sig <= (float).5) {
+	gt = tau1 + b2 * (d1 + d2 + b1 * (double)3. * (d1 - d2));
+    } else if (sig <= (double).5) {
 
 /* 0 < SIG .LE. .5.  Use approximations designed to avoid */
 /*   cancellation error in the hyperbolic functions. */
@@ -370,16 +371,16 @@ L1:
 	e1 = exp(-sb1);
 	e2 = exp(-sb2);
 	ems = e1 * e2;
-	tm = (float)1. - ems;
+	tm = (double)1. - ems;
 	ts = tm * tm;
-	tm1 = (float)1. - e1;
-	tm2 = (float)1. - e2;
-	e = tm * (sig * (ems + (float)1.) - tm - tm);
+	tm1 = (double)1. - e1;
+	tm2 = (double)1. - e2;
+	e = tm * (sig * (ems + (double)1.) - tm - tm);
 	*f = *f1 + al * s + a * (tm * tm1 * tm2 * (d1 + d2) + sig * ((e2 * 
 		tm1 * tm1 - b1 * ts) * d1 + (e1 * tm2 * tm2 - b2 * ts) * d2)) 
 		/ (sig * e);
-	tp1 = e1 + (float)1.;
-	tp2 = e2 + (float)1.;
+	tp1 = e1 + (double)1.;
+	tp2 = e2 + (double)1.;
 	gt = s + (tm1 * (tm * tp2 - sig * e2 * tp1) * d1 - tm2 * (tm * tp1 - 
 		sig * e1 * tp2) * d2) / e;
     }
@@ -403,26 +404,26 @@ L2:
     io___38.ciunit = lun;
     s_wsfe(&io___38);
     for (i__ = 1; i__ <= 3; ++i__) {
-	do_fio(&c__1, (char *)&p1[i__], (ftnlen)sizeof(real));
+	do_fio(&c__1, (char *)&p1[i__], (ftnlen)sizeof(doublereal));
     }
     for (i__ = 1; i__ <= 3; ++i__) {
-	do_fio(&c__1, (char *)&p2[i__], (ftnlen)sizeof(real));
+	do_fio(&c__1, (char *)&p2[i__], (ftnlen)sizeof(doublereal));
     }
     e_wsfe();
     s_stop("", (ftnlen)0);
     return 0;
 } /* arcint_ */
 
-doublereal arclen_(real *p, real *q)
+doublereal arclen_(doublereal *p, doublereal *q)
 {
     /* System generated locals */
-    real ret_val, r__1;
+    doublereal ret_val, r__1;
 
     /* Builtin functions */
     double atan(doublereal), sqrt(doublereal);
 
     /* Local variables */
-    static real d__;
+    static doublereal d__;
     static integer i__;
 
 
@@ -468,31 +469,31 @@ doublereal arclen_(real *p, real *q)
     --p;
 
     /* Function Body */
-    d__ = (float)0.;
+    d__ = (double)0.;
     for (i__ = 1; i__ <= 3; ++i__) {
 /* Computing 2nd power */
 	r__1 = p[i__] + q[i__];
 	d__ += r__1 * r__1;
 /* L1: */
     }
-    if (d__ == (float)0.) {
+    if (d__ == (double)0.) {
 
 /* P and Q are separated by 180 degrees. */
 
-	ret_val = atan((float)1.) * (float)4.;
-    } else if (d__ >= (float)4.) {
+	ret_val = atan((double)1.) * (double)4.;
+    } else if (d__ >= (double)4.) {
 
 /* P and Q coincide. */
 
-	ret_val = (float)0.;
+	ret_val = (double)0.;
     } else {
-	ret_val = atan(sqrt(((float)4. - d__) / d__)) * (float)2.;
+	ret_val = atan(sqrt(((double)4. - d__) / d__)) * (double)2.;
     }
     return ret_val;
 } /* arclen_ */
 
-/* Subroutine */ int constr_(real *xk, real *yk, real *zk, real *cx, real *sx,
-	 real *cy, real *sy)
+/* Subroutine */ int constr_(doublereal *xk, doublereal *yk, doublereal *zk, doublereal *cx, doublereal *sx,
+	 doublereal *cy, doublereal *sy)
 {
     /* Builtin functions */
     double sqrt(doublereal);
@@ -536,37 +537,37 @@ doublereal arclen_(real *p, real *q)
 
     *cy = sqrt(*yk * *yk + *zk * *zk);
     *sy = *xk;
-    if (*cy != (float)0.) {
+    if (*cy != (double)0.) {
 	*cx = *zk / *cy;
 	*sx = *yk / *cy;
     } else {
 
 /* (XK,YK,ZK) lies on the X-axis. */
 
-	*cx = (float)1.;
-	*sx = (float)0.;
+	*cx = (double)1.;
+	*sx = (double)0.;
     }
     return 0;
 } /* constr_ */
 
-doublereal fval_(real *b1, real *b2, real *b3, real *v1, real *v2, real *v3, 
-	real *f1, real *f2, real *f3, real *g1, real *g2, real *g3, real *
-	sig1, real *sig2, real *sig3)
+doublereal fval_(doublereal *b1, doublereal *b2, doublereal *b3, doublereal *v1, doublereal *v2, doublereal *v3, 
+	doublereal *f1, doublereal *f2, doublereal *f3, doublereal *g1, doublereal *g2, doublereal *g3, doublereal *
+	sig1, doublereal *sig2, doublereal *sig3)
 {
     /* System generated locals */
-    real ret_val;
+    doublereal ret_val;
 
     /* Builtin functions */
     double sqrt(doublereal);
 
     /* Local variables */
-    static real f, g[3];
+    static doublereal f, g[3];
     static integer i__;
-    static real c1, c2, c3, q1[3], q2[3], q3[3], s1, s2, s3, u1[3], u2[3], u3[
+    static doublereal c1, c2, c3, q1[3], q2[3], q3[3], s1, s2, s3, u1[3], u2[3], u3[
 	    3], ds, dv, u1n, u2n, u3n, sig, val, dum, sum;
-    extern doublereal hval_(real *, real *, real *, real *, real *, real *);
-    extern /* Subroutine */ int arcint_(real *, real *, real *, real *, real *
-	    , real *, real *, real *, real *, real *, real *);
+    extern doublereal hval_(doublereal *, doublereal *, doublereal *, doublereal *, doublereal *, doublereal *);
+    extern /* Subroutine */ int arcint_(doublereal *, doublereal *, doublereal *, doublereal *, doublereal *
+	    , doublereal *, doublereal *, doublereal *, doublereal *, doublereal *, doublereal *);
 
 
 /* *********************************************************** */
@@ -695,7 +696,7 @@ doublereal fval_(real *b1, real *b2, real *b3, real *v1, real *v2, real *v3,
     c2 = *b3 * *b1;
     c3 = *b1 * *b2;
     sum = c1 + c2 + c3;
-    if (sum <= (float)0.) {
+    if (sum <= (double)0.) {
 
 /* P coincides with a vertex. */
 
@@ -714,9 +715,9 @@ doublereal fval_(real *b1, real *b2, real *b3, real *v1, real *v2, real *v3,
     s1 = *b2 + *b3;
     s2 = *b3 + *b1;
     s3 = *b1 + *b2;
-    u1n = (float)0.;
-    u2n = (float)0.;
-    u3n = (float)0.;
+    u1n = (double)0.;
+    u2n = (double)0.;
+    u3n = (double)0.;
     for (i__ = 1; i__ <= 3; ++i__) {
 	u1[i__ - 1] = (*b2 * v2[i__] + *b3 * v3[i__]) / s1;
 	u2[i__ - 1] = (*b3 * v3[i__] + *b1 * v1[i__]) / s2;
@@ -742,7 +743,7 @@ doublereal fval_(real *b1, real *b2, real *b3, real *v1, real *v2, real *v3,
 /* Compute interpolated value (VAL) at P by looping on */
 /*   triangle sides. */
 
-    val = (float)0.;
+    val = (double)0.;
 
 /* Contribution from side opposite V1: */
 
@@ -788,13 +789,13 @@ doublereal fval_(real *b1, real *b2, real *b3, real *v1, real *v2, real *v3,
     return ret_val;
 } /* fval_ */
 
-/* Subroutine */ int getsig_(integer *n, real *x, real *y, real *z__, real *
-	h__, integer *list, integer *lptr, integer *lend, real *grad, real *
-	tol, real *sigma, real *dsmax, integer *ier)
+/* Subroutine */ int getsig_(integer *n, doublereal *x, doublereal *y, doublereal *z__, doublereal *
+	h__, integer *list, integer *lptr, integer *lend, doublereal *grad, doublereal *
+	tol, doublereal *sigma, doublereal *dsmax, integer *ier)
 {
     /* Initialized data */
 
-    static real sbig = (float)85.;
+    static doublereal sbig = (double)85.;
     static integer lun = -1;
 
     /* Format strings */
@@ -809,29 +810,29 @@ IG) = \002,e15.8/1x,35x,\002FP(SIG) = \002,e15.8)";
 
     /* System generated locals */
     integer i__1, i__2;
-    real r__1, r__2;
+    doublereal r__1, r__2;
 
     /* Builtin functions */
     integer s_wsfe(cilist *), do_fio(integer *, char *, ftnlen), e_wsfe();
-    double sqrt(doublereal), exp(doublereal), r_sign(real *, real *);
+    double sqrt(doublereal), exp(doublereal), r_sign(doublereal *, doublereal *);
 
     /* Local variables */
-    static real a, e, f, s, t, c1, c2, d0, d1, d2, f0;
+    static doublereal a, e, f, s, t, c1, c2, d0, d1, d2, f0;
     static integer n1, n2;
-    static real p1[3], p2[3], s1, s2, t0, t1, t2, al, fp, tm, un[3];
+    static doublereal p1[3], p2[3], s1, s2, t0, t1, t2, al, fp, tm, un[3];
     static integer nm1, lp1, lp2;
-    static real tp1, d1d2, scm, dsm, ems, sig;
+    static doublereal tp1, d1d2, scm, dsm, ems, sig;
     static integer lpl;
-    static real sgn;
+    static doublereal sgn;
     static integer nit;
-    static real ssm, ems2, d1pd2, fneg, dsig, dmax__, fmax;
+    static doublereal ssm, ems2, d1pd2, fneg, dsig, dmax__, fmax;
     static integer icnt;
-    static real ftol, rtol, stol, coshm, sigin, sinhm, ssinh;
-    extern doublereal store_(real *);
-    static real unorm;
-    extern doublereal arclen_(real *, real *);
-    static real coshmm;
-    extern /* Subroutine */ int snhcsh_(real *, real *, real *, real *);
+    static doublereal ftol, rtol, stol, coshm, sigin, sinhm, ssinh;
+    extern doublereal store_(doublereal *);
+    static doublereal unorm;
+    extern doublereal arclen_(doublereal *, doublereal *);
+    static doublereal coshmm;
+    extern /* Subroutine */ int snhcsh_(doublereal *, doublereal *, doublereal *, doublereal *);
     extern integer lstptr_(integer *, integer *, integer *, integer *);
 
     /* Fortran I/O blocks */
@@ -1004,14 +1005,14 @@ IG) = \002,e15.8/1x,35x,\002FP(SIG) = \002,e15.8)";
 /*   relative tolerance RTOL = 100*Macheps. */
 
     ftol = dabs(*tol);
-    rtol = (float)1.;
+    rtol = (double)1.;
 L1:
-    rtol /= (float)2.;
-    r__1 = rtol + (float)1.;
-    if (store_(&r__1) > (float)1.) {
+    rtol /= (double)2.;
+    r__1 = rtol + (double)1.;
+    if (store_(&r__1) > (double)1.) {
 	goto L1;
     }
-    rtol *= (float)200.;
+    rtol *= (double)200.;
 
 /* Print a heading. */
 
@@ -1019,7 +1020,7 @@ L1:
 	io___70.ciunit = lun;
 	s_wsfe(&io___70);
 	do_fio(&c__1, (char *)&(*n), (ftnlen)sizeof(integer));
-	do_fio(&c__1, (char *)&ftol, (ftnlen)sizeof(real));
+	do_fio(&c__1, (char *)&ftol, (ftnlen)sizeof(doublereal));
 	e_wsfe();
     }
 
@@ -1027,7 +1028,7 @@ L1:
 /*   the loop on arcs. */
 
     icnt = 0;
-    dsm = (float)0.;
+    dsm = (double)0.;
 
 /* Loop on arcs N1-N2 for which N2 > N1.  LPL points to the */
 /*   last neighbor of N1. */
@@ -1069,7 +1070,7 @@ L2:
 	un[1] = p1[2] * p2[0] - p1[0] * p2[2];
 	un[2] = p1[0] * p2[1] - p1[1] * p2[0];
 	unorm = sqrt(un[0] * un[0] + un[1] * un[1] + un[2] * un[2]);
-	if (unorm == (float)0. || al == (float)0.) {
+	if (unorm == (double)0. || al == (double)0.) {
 	    goto L12;
 	}
 	sigin = sigma[lp1];
@@ -1094,28 +1095,28 @@ L2:
 /*   property. */
 
 	sig = sbig;
-	if (d1d2 == (float)0. && s1 != s2 || s == (float)0. && s1 * s2 > (
-		float)0.) {
+	if (d1d2 == (double)0. && s1 != s2 || s == (double)0. && s1 * s2 > (
+		double)0.) {
 	    goto L8;
 	}
 
 /* Test for SIGMA = 0 sufficient.  The data satisfies convex- */
 /*   ity iff D1D2 .GE. 0, and D1D2 = 0 implies S1 = S = S2. */
 
-	sig = (float)0.;
-	if (d1d2 < (float)0.) {
+	sig = (double)0.;
+	if (d1d2 < (double)0.) {
 	    goto L4;
 	}
-	if (d1d2 == (float)0.) {
+	if (d1d2 == (double)0.) {
 	    goto L8;
 	}
 /* Computing MAX */
 	r__1 = d1 / d2, r__2 = d2 / d1;
 	t = dmax(r__1,r__2);
-	if (t <= (float)2.) {
+	if (t <= (double)2.) {
 	    goto L8;
 	}
-	tp1 = t + (float)1.;
+	tp1 = t + (double)1.;
 
 /* Convexity:  find a zero of F(SIG) = SIG*coshm(SIG)/ */
 /*   sinhm(SIG) - TP1. */
@@ -1125,25 +1126,25 @@ L2:
 /*     .2 at SIG = 0.  A quadratic approximation is used to */
 /*     obtain a starting point for the Newton method. */
 
-	sig = sqrt(t * (float)10. - (float)20.);
+	sig = sqrt(t * (double)10. - (double)20.);
 	nit = 0;
 
 /*   Top of loop: */
 
 L3:
-	if (sig <= (float).5) {
+	if (sig <= (double).5) {
 	    snhcsh_(&sig, &sinhm, &coshm, &coshmm);
 	    t1 = coshm / sinhm;
-	    fp = t1 + sig * (sig / sinhm - t1 * t1 + (float)1.);
+	    fp = t1 + sig * (sig / sinhm - t1 * t1 + (double)1.);
 	} else {
 
 /*   Scale sinhm and coshm by 2*exp(-SIG) in order to avoid */
 /*     overflow with large SIG. */
 
 	    ems = exp(-sig);
-	    ssm = (float)1. - ems * (ems + sig + sig);
-	    t1 = ((float)1. - ems) * ((float)1. - ems) / ssm;
-	    fp = t1 + sig * (sig * (float)2. * ems / ssm - t1 * t1 + (float)
+	    ssm = (double)1. - ems * (ems + sig + sig);
+	    t1 = ((double)1. - ems) * ((double)1. - ems) / ssm;
+	    fp = t1 + sig * (sig * (double)2. * ems / ssm - t1 * t1 + (double)
 		    1.);
 	}
 
@@ -1151,20 +1152,20 @@ L3:
 	if (lun >= 0) {
 	    io___102.ciunit = lun;
 	    s_wsfe(&io___102);
-	    do_fio(&c__1, (char *)&sig, (ftnlen)sizeof(real));
-	    do_fio(&c__1, (char *)&f, (ftnlen)sizeof(real));
-	    do_fio(&c__1, (char *)&fp, (ftnlen)sizeof(real));
+	    do_fio(&c__1, (char *)&sig, (ftnlen)sizeof(doublereal));
+	    do_fio(&c__1, (char *)&f, (ftnlen)sizeof(doublereal));
+	    do_fio(&c__1, (char *)&fp, (ftnlen)sizeof(doublereal));
 	    e_wsfe();
 	}
 	++nit;
 
 /*   Test for convergence. */
 
-	if (fp <= (float)0.) {
+	if (fp <= (double)0.) {
 	    goto L8;
 	}
 	dsig = -f / fp;
-	if (dabs(dsig) <= rtol * sig || f >= (float)0. && f <= ftol || dabs(f)
+	if (dabs(dsig) <= rtol * sig || f >= (double)0. && f <= ftol || dabs(f)
 		 <= rtol) {
 	    goto L8;
 	}
@@ -1178,16 +1179,16 @@ L3:
 /*   fied iff S1*S .GE. 0 and S2*S .GE. 0 since S .NE. 0. */
 
 L4:
-	if (s1 * s < (float)0. || s2 * s < (float)0.) {
+	if (s1 * s < (double)0. || s2 * s < (double)0.) {
 	    goto L8;
 	}
-	t0 = s * (float)3. - s1 - s2;
+	t0 = s * (double)3. - s1 - s2;
 	d0 = t0 * t0 - s1 * s2;
 
 /* SIGMA = 0 is sufficient for monotonicity iff S*T0 .GE. 0 */
 /*   or D0 .LE. 0. */
 
-	if (d0 <= (float)0. || s * t0 >= (float)0.) {
+	if (d0 <= (double)0. || s * t0 >= (double)0.) {
 	    goto L8;
 	}
 
@@ -1203,13 +1204,13 @@ L4:
 
 	sgn = r_sign(&c_b43, &s);
 	sig = sbig;
-	fmax = sgn * (sig * s - s1 - s2) / (sig - (float)2.);
-	if (fmax <= (float)0.) {
+	fmax = sgn * (sig * s - s1 - s2) / (sig - (double)2.);
+	if (fmax <= (double)0.) {
 	    goto L8;
 	}
 	stol = rtol * sig;
 	f = fmax;
-	f0 = sgn * d0 / ((d1 - d2) * (float)3.);
+	f0 = sgn * d0 / ((d1 - d2) * (double)3.);
 	fneg = f0;
 	dsig = sig;
 	dmax__ = sig;
@@ -1224,18 +1225,18 @@ L5:
 	if (lun >= 0) {
 	    io___113.ciunit = lun;
 	    s_wsfe(&io___113);
-	    do_fio(&c__1, (char *)&dsig, (ftnlen)sizeof(real));
+	    do_fio(&c__1, (char *)&dsig, (ftnlen)sizeof(doublereal));
 	    e_wsfe();
 	}
-	if (dabs(dsig) > dabs(dmax__) || dsig * dmax__ > (float)0.) {
+	if (dabs(dsig) > dabs(dmax__) || dsig * dmax__ > (double)0.) {
 	    goto L7;
 	}
 
 /*   Restrict the step-size such that abs(DSIG) .GE. STOL/2. */
 /*     Note that DSIG and DMAX have opposite signs. */
 
-	if (dabs(dsig) < stol / (float)2.) {
-	    r__1 = stol / (float)2.;
+	if (dabs(dsig) < stol / (double)2.) {
+	    r__1 = stol / (double)2.;
 	    dsig = -r_sign(&r__1, &dmax__);
 	}
 
@@ -1243,7 +1244,7 @@ L5:
 
 	sig += dsig;
 	f0 = f;
-	if (sig <= (float).5) {
+	if (sig <= (double).5) {
 
 /*   Use approximations to the hyperbolic functions designed */
 /*     to avoid cancellation error with small SIG. */
@@ -1260,8 +1261,8 @@ L5:
 
 	    ems = exp(-sig);
 	    ems2 = ems + ems;
-	    tm = (float)1. - ems;
-	    ssinh = tm * (ems + (float)1.);
+	    tm = (double)1. - ems;
+	    ssinh = tm * (ems + (double)1.);
 	    ssm = ssinh - sig * ems2;
 	    scm = tm * tm;
 	    c1 = sig * scm * d2 - ssm * d1pd2;
@@ -1270,11 +1271,11 @@ L5:
 /*   R is in (0,1) and well-defined iff HPP(T1)*HPP(T2) < 0. */
 
 	    f = fmax;
-	    if (c1 * (sig * scm * d1 - ssm * d1pd2) >= (float)0.) {
+	    if (c1 * (sig * scm * d1 - ssm * d1pd2) >= (double)0.) {
 		goto L6;
 	    }
 	    a = ems2 * (sig * tm * d2 + (tm - sig) * d1pd2);
-	    if (a * (c2 + c1) < (float)0.) {
+	    if (a * (c2 + c1) < (double)0.) {
 		goto L6;
 	    }
 	    e = sig * ssinh - scm - scm;
@@ -1290,23 +1291,23 @@ L6:
 	    io___122.ciunit = lun;
 	    s_wsfe(&io___122);
 	    do_fio(&c__1, (char *)&nit, (ftnlen)sizeof(integer));
-	    do_fio(&c__1, (char *)&sig, (ftnlen)sizeof(real));
-	    do_fio(&c__1, (char *)&f, (ftnlen)sizeof(real));
+	    do_fio(&c__1, (char *)&sig, (ftnlen)sizeof(doublereal));
+	    do_fio(&c__1, (char *)&f, (ftnlen)sizeof(doublereal));
 	    e_wsfe();
 	}
 
 /*   Test for convergence. */
 
 	stol = rtol * sig;
-	if (dabs(dmax__) <= stol || f >= (float)0. && f <= ftol || dabs(f) <= 
+	if (dabs(dmax__) <= stol || f >= (double)0. && f <= ftol || dabs(f) <= 
 		rtol) {
 	    goto L8;
 	}
 	dmax__ += dsig;
-	if (f0 * f > (float)0. && dabs(f) >= dabs(f0)) {
+	if (f0 * f > (double)0. && dabs(f) >= dabs(f0)) {
 	    goto L7;
 	}
-	if (f0 * f <= (float)0.) {
+	if (f0 * f <= (double)0.) {
 
 /*   F and F0 have opposite signs.  Update (SNEG,FNEG) to */
 /*     (SG0,F0) so that F and FNEG always have opposite */
@@ -1366,7 +1367,7 @@ L9:
 /* N < 3. */
 
 L11:
-    *dsmax = (float)0.;
+    *dsmax = (double)0.;
     *ier = -1;
     return 0;
 
@@ -1378,13 +1379,13 @@ L12:
     return 0;
 } /* getsig_ */
 
-/* Subroutine */ int givens_(real *a, real *b, real *c__, real *s)
+/* Subroutine */ int givens_(doublereal *a, doublereal *b, doublereal *c__, doublereal *s)
 {
     /* Builtin functions */
     double sqrt(doublereal);
 
     /* Local variables */
-    static real r__, u, v, aa, bb;
+    static doublereal r__, u, v, aa, bb;
 
 
 /* *********************************************************** */
@@ -1449,7 +1450,7 @@ L12:
 
 	u = aa + aa;
 	v = bb / u;
-	r__ = sqrt(v * v + (float).25) * u;
+	r__ = sqrt(v * v + (double).25) * u;
 	*c__ = aa / r__;
 	*s = v * (*c__ + *c__);
 
@@ -1458,7 +1459,7 @@ L12:
 
 	*b = *s;
 	*a = r__;
-    } else if (bb != (float)0.) {
+    } else if (bb != (double)0.) {
 
 /* ABS(A) .LE. ABS(B). */
 
@@ -1467,55 +1468,55 @@ L12:
 
 /* Store R in A. */
 
-	*a = sqrt(v * v + (float).25) * u;
+	*a = sqrt(v * v + (double).25) * u;
 	*s = bb / *a;
 	*c__ = v * (*s + *s);
 
 /* Note that R has the sign of B, S > 0, and C has */
 /*   SIGN(A)*SIGN(B). */
 
-	*b = (float)1.;
-	if (*c__ != (float)0.) {
-	    *b = (float)1. / *c__;
+	*b = (double)1.;
+	if (*c__ != (double)0.) {
+	    *b = (double)1. / *c__;
 	}
     } else {
 
 /* A = B = 0. */
 
-	*c__ = (float)1.;
-	*s = (float)0.;
+	*c__ = (double)1.;
+	*s = (double)0.;
     }
     return 0;
 } /* givens_ */
 
-/* Subroutine */ int gradg_(integer *n, real *x, real *y, real *z__, real *f, 
-	integer *list, integer *lptr, integer *lend, integer *iflgs, real *
-	sigma, integer *nit, real *dgmax, real *grad, integer *ier)
+/* Subroutine */ int gradg_(integer *n, doublereal *x, doublereal *y, doublereal *z__, doublereal *f, 
+	integer *list, integer *lptr, integer *lend, integer *iflgs, doublereal *
+	sigma, integer *nit, doublereal *dgmax, doublereal *grad, integer *ier)
 {
     /* System generated locals */
     integer i__1, i__2;
-    real r__1, r__2;
+    doublereal r__1, r__2;
 
     /* Builtin functions */
     double sqrt(doublereal), atan(doublereal);
 
     /* Local variables */
-    static real d__;
+    static doublereal d__;
     static integer j, k;
-    static real t, g1, g2, g3, r1, r2, a11, a12, a22, fk, sd, cx;
+    static doublereal t, g1, g2, g3, r1, r2, a11, a12, a22, fk, sd, cx;
     static integer nn;
-    static real cy, xj, xk, yk, zk, yj, zj, sx, sy, xs, ys, dg1, dg2, dgk[3], 
+    static doublereal cy, xj, xk, yk, zk, yj, zj, sx, sy, xs, ys, dg1, dg2, dgk[3], 
 	    den;
     static integer ifl;
-    static real det, sig;
+    static doublereal det, sig;
     static integer lpj, lpl;
-    static real tol, alfa, dgmx;
+    static doublereal tol, alfa, dgmx;
     static integer iter;
-    static real sinal;
+    static doublereal sinal;
     static integer maxit;
-    extern /* Subroutine */ int grcoef_(real *, real *, real *), constr_(real 
-	    *, real *, real *, real *, real *, real *, real *), aplyrt_(real *
-	    , real *, real *, real *, real *, real *, real *);
+    extern /* Subroutine */ int grcoef_(doublereal *, doublereal *, doublereal *), constr_(doublereal 
+	    *, doublereal *, doublereal *, doublereal *, doublereal *, doublereal *, doublereal *), aplyrt_(doublereal *
+	    , doublereal *, doublereal *, doublereal *, doublereal *, doublereal *, doublereal *);
 
 
 /* *********************************************************** */
@@ -1713,12 +1714,12 @@ L12:
 /* Test for errors in input, and initialize iteration count, */
 /*   tension factor, and output value of DGMAX. */
 
-    if (nn < 3 || maxit < 0 || tol < (float)0.) {
+    if (nn < 3 || maxit < 0 || tol < (double)0.) {
 	goto L11;
     }
     iter = 0;
     sig = sigma[1];
-    dgmx = (float)0.;
+    dgmx = (double)0.;
 
 /* Top of iteration loop. */
 
@@ -1726,7 +1727,7 @@ L1:
     if (iter == maxit) {
 	goto L4;
     }
-    dgmx = (float)0.;
+    dgmx = (double)0.;
 
 /* Loop on nodes. */
 
@@ -1748,11 +1749,11 @@ L1:
 /*     change (DG1,DG2,0) in the K-th solution components */
 /*     (symmetric matrix in A and residual in R). */
 
-	a11 = (float)0.;
-	a12 = (float)0.;
-	a22 = (float)0.;
-	r1 = (float)0.;
-	r2 = (float)0.;
+	a11 = (double)0.;
+	a12 = (double)0.;
+	a22 = (double)0.;
+	r1 = (double)0.;
+	r2 = (double)0.;
 
 /*   Loop on neighbors J of node K. */
 
@@ -1772,7 +1773,7 @@ L2:
 /*   Compute arc-length ALFA between J and K, SINAL = */
 /*     SIN(ALFA), and DEN = ALFA*SIN(ALFA)**2. */
 
-	alfa = atan(sqrt(((float)1. - zj) / (zj + (float)1.))) * (float)2.;
+	alfa = atan(sqrt(((double)1. - zj) / (zj + (double)1.))) * (double)2.;
 	xs = xj * xj;
 	ys = yj * yj;
 	sinal = sqrt(xs + ys);
@@ -1782,7 +1783,7 @@ L2:
 /*     D = SIG*(SIG*COSHM-SINHM)/E and SD = SIG*SINHM/E for */
 /*     E = SIG*SINH-2*COSHM. */
 
-	if (den == (float)0.) {
+	if (den == (double)0.) {
 	    goto L13;
 	}
 	if (ifl >= 1) {
@@ -1811,14 +1812,14 @@ L2:
 /*   Solve the 2 by 2 system and update DGMAX. */
 
 	det = a11 * a22 - a12 * a12;
-	if (det == (float)0. || a11 == (float)0.) {
+	if (det == (double)0. || a11 == (double)0.) {
 	    goto L12;
 	}
 	dg2 = (a11 * r2 - a12 * r1) / det;
 	dg1 = (r1 - a12 * dg2) / a11;
 /* Computing MAX */
 	r__1 = dgmx, r__2 = sqrt(dg1 * dg1 + dg2 * dg2) / (sqrt(g1 * g1 + g2 *
-		 g2 + g3 * g3) + (float)1.);
+		 g2 + g3 * g3) + (double)1.);
 	dgmx = dmax(r__1,r__2);
 
 /*   Rotate (DG1,DG2,0) back to the original coordinate */
@@ -1856,7 +1857,7 @@ L4:
 
 L11:
     *nit = 0;
-    *dgmax = (float)0.;
+    *dgmax = (double)0.;
     *ier = -1;
     return 0;
 
@@ -1877,48 +1878,48 @@ L13:
     return 0;
 } /* gradg_ */
 
-/* Subroutine */ int gradl_(integer *n, integer *k, real *x, real *y, real *
-	z__, real *w, integer *list, integer *lptr, integer *lend, real *g, 
+/* Subroutine */ int gradl_(integer *n, integer *k, doublereal *x, doublereal *y, doublereal *
+	z__, doublereal *w, integer *list, integer *lptr, integer *lend, doublereal *g, 
 	integer *ier)
 {
     /* Initialized data */
 
-    static real rtol = (float)1e-6;
-    static real dtol = (float).01;
-    static real sf = (float)1.;
+    static doublereal rtol = (double)1e-6;
+    static doublereal dtol = (double).01;
+    static doublereal sf = (double)1.;
 
     /* System generated locals */
     integer i__1;
-    real r__1, r__2;
+    doublereal r__1, r__2;
 
     /* Builtin functions */
     double sqrt(doublereal);
 
     /* Local variables */
-    static real a[36]	/* was [6][6] */, c__;
+    static doublereal a[36]	/* was [6][6] */, c__;
     static integer i__, j, l;
-    static real s, df;
+    static doublereal s, df;
     static integer kk;
-    static real av, rf, cx;
+    static doublereal av, rf, cx;
     static integer nn;
-    static real cy;
+    static doublereal cy;
     static integer np;
-    static real dx, dy, wk, xp, yp, zp, sx, sy, wt;
+    static doublereal dx, dy, wk, xp, yp, zp, sx, sy, wt;
     static integer im1, ip1, jp1, lm1;
-    static real rin;
+    static doublereal rin;
     static integer lnp;
-    static real sum, dmin__;
+    static doublereal sum, dmin__;
     static integer lmin, ierr, lmax;
-    static real avsq;
+    static doublereal avsq;
     static integer npts[30];
-    extern /* Subroutine */ int getnp_(real *, real *, real *, integer *, 
-	    integer *, integer *, integer *, integer *, real *, integer *), 
-	    aplyr_(real *, real *, real *, real *, real *, real *, real *, 
-	    real *, real *, real *), setup_(real *, real *, real *, real *, 
-	    real *, real *, real *, real *), givens_(real *, real *, real *, 
-	    real *), rotate_(integer *, real *, real *, real *, real *), 
-	    constr_(real *, real *, real *, real *, real *, real *, real *), 
-	    aplyrt_(real *, real *, real *, real *, real *, real *, real *);
+    extern /* Subroutine */ int getnp_(doublereal *, doublereal *, doublereal *, integer *, 
+	    integer *, integer *, integer *, integer *, doublereal *, integer *), 
+	    aplyr_(doublereal *, doublereal *, doublereal *, doublereal *, doublereal *, doublereal *, doublereal *, 
+	    doublereal *, doublereal *, doublereal *), setup_(doublereal *, doublereal *, doublereal *, doublereal *, 
+	    doublereal *, doublereal *, doublereal *, doublereal *), givens_(doublereal *, doublereal *, doublereal *, 
+	    doublereal *), rotate_(integer *, doublereal *, doublereal *, doublereal *, doublereal *), 
+	    constr_(doublereal *, doublereal *, doublereal *, doublereal *, doublereal *, doublereal *, doublereal *), 
+	    aplyrt_(doublereal *, doublereal *, doublereal *, doublereal *, doublereal *, doublereal *, doublereal *);
 
 
 /* *********************************************************** */
@@ -2107,14 +2108,14 @@ L13:
 /*   the negative Z component (in the rotated coordinate */
 /*   system) of the new node on return from GETNP. */
 
-    sum = (float)0.;
+    sum = (double)0.;
     npts[0] = kk;
     lm1 = lmin - 1;
     i__1 = lm1;
     for (lnp = 2; lnp <= i__1; ++lnp) {
 	getnp_(&x[1], &y[1], &z__[1], &list[1], &lptr[1], &lend[1], &lnp, 
 		npts, &df, &ierr);
-	sum = sum + (float)1. - df * df;
+	sum = sum + (double)1. - df * df;
 /* L1: */
     }
 
@@ -2128,23 +2129,23 @@ L13:
 	if (rf - df >= rtol) {
 	    goto L3;
 	}
-	sum = sum + (float)1. - rf * rf;
+	sum = sum + (double)1. - rf * rf;
 /* L2: */
     }
 
 /*   Use all LMAX nodes in the least squares fit.  R is */
 /*     arbitrarily increased by 5 percent. */
 
-    rf = rf * (float)1.05 + (float).05;
+    rf = rf * (double)1.05 + (double).05;
     lnp = lmax + 1;
 
 /*   There are LNP-2 equations corresponding to nodes */
 /*     NPTS(2),...,NPTS(LNP-1). */
 
 L3:
-    avsq = sum / (real) (lnp - 2);
+    avsq = sum / (doublereal) (lnp - 2);
     av = sqrt(avsq);
-    rin = (float)1. / (rf + (float)1.);
+    rin = (double)1. / (rf + (double)1.);
 
 /* Construct the rotation. */
 
@@ -2158,7 +2159,7 @@ L3:
     for (i__ = 1; i__ <= 5; ++i__) {
 	np = npts[i__];
 	aplyr_(&x[np], &y[np], &z__[np], &cx, &sx, &cy, &sy, &xp, &yp, &zp);
-	wt = (float)1. / ((float)1. - zp) - rin;
+	wt = (double)1. / ((double)1. - zp) - rin;
 	setup_(&xp, &yp, &w[np], &wk, &av, &avsq, &wt, &a[i__ * 6 - 6]);
 	if (i__ == 1) {
 	    goto L5;
@@ -2186,7 +2187,7 @@ L6:
     }
     np = npts[i__ - 1];
     aplyr_(&x[np], &y[np], &z__[np], &cx, &sx, &cy, &sy, &xp, &yp, &zp);
-    wt = (float)1. / ((float)1. - zp) - rin;
+    wt = (double)1. / ((double)1. - zp) - rin;
     setup_(&xp, &yp, &w[np], &wk, &av, &avsq, &wt, &a[30]);
     for (j = 1; j <= 5; ++j) {
 	jp1 = j + 1;
@@ -2219,7 +2220,7 @@ L8:
 	    getnp_(&x[1], &y[1], &z__[1], &list[1], &lptr[1], &lend[1], &lnp, 
 		    npts, &rf, &ierr);
 	}
-	rin = (float)1. / ((rf + (float)1.) * (float)1.05);
+	rin = (double)1. / ((rf + (double)1.) * (double)1.05);
 	goto L6;
     }
 
@@ -2231,7 +2232,7 @@ L8:
 	a[i__ + 29] = sf;
 	ip1 = i__ + 1;
 	for (j = ip1; j <= 6; ++j) {
-	    a[j + 29] = (float)0.;
+	    a[j + 29] = (double)0.;
 /* L9: */
 	}
 	for (j = i__; j <= 5; ++j) {
@@ -2282,14 +2283,14 @@ L14:
     return 0;
 } /* gradl_ */
 
-/* Subroutine */ int grcoef_(real *sigma, real *d__, real *sd)
+/* Subroutine */ int grcoef_(doublereal *sigma, doublereal *d__, doublereal *sd)
 {
     /* Builtin functions */
     double exp(doublereal);
 
     /* Local variables */
-    static real e, scm, sig, ems, ssm, coshm, sinhm, ssinh, coshmm;
-    extern /* Subroutine */ int snhcsh_(real *, real *, real *, real *);
+    static doublereal e, scm, sig, ems, ssm, coshm, sinhm, ssinh, coshmm;
+    extern /* Subroutine */ int snhcsh_(doublereal *, doublereal *, doublereal *, doublereal *);
 
 
 /* *********************************************************** */
@@ -2327,13 +2328,13 @@ L14:
 /* *********************************************************** */
 
     sig = *sigma;
-    if (sig < (float)1e-9) {
+    if (sig < (double)1e-9) {
 
 /* Cubic function: */
 
-	*d__ = (float)4.;
-	*sd = (float)2.;
-    } else if (sig <= (float).5) {
+	*d__ = (double)4.;
+	*sd = (double)2.;
+    } else if (sig <= (double).5) {
 
 /* 0 < SIG .LE. .5. */
 
@@ -2352,9 +2353,9 @@ L14:
 /*   avoid overflow when SIGMA is large. */
 
 	ems = exp(-sig);
-	ssinh = (float)1. - ems * ems;
-	ssm = ssinh - sig * (float)2. * ems;
-	scm = ((float)1. - ems) * ((float)1. - ems);
+	ssinh = (double)1. - ems * ems;
+	ssm = ssinh - sig * (double)2. * ems;
+	scm = ((double)1. - ems) * ((double)1. - ems);
 	e = sig * ssinh - scm - scm;
 	*d__ = sig * (sig * scm - ssm) / e;
 	*sd = sig * ssm / e;
@@ -2362,19 +2363,19 @@ L14:
     return 0;
 } /* grcoef_ */
 
-doublereal hval_(real *b, real *h1, real *h2, real *hp1, real *hp2, real *
+doublereal hval_(doublereal *b, doublereal *h1, doublereal *h2, doublereal *hp1, doublereal *hp2, doublereal *
 	sigma)
 {
     /* System generated locals */
-    real ret_val;
+    doublereal ret_val;
 
     /* Builtin functions */
     double exp(doublereal);
 
     /* Local variables */
-    static real e, s, b1, b2, d1, d2, e1, e2, cm, sm, tm, ts, cm2, sb1, sb2, 
+    static doublereal e, s, b1, b2, d1, d2, e1, e2, cm, sm, tm, ts, cm2, sb1, sb2, 
 	    sm2, tm1, tm2, cmm, sig, ems, dummy;
-    extern /* Subroutine */ int snhcsh_(real *, real *, real *, real *);
+    extern /* Subroutine */ int snhcsh_(doublereal *, doublereal *, doublereal *, doublereal *);
 
 
 /* *********************************************************** */
@@ -2425,7 +2426,7 @@ doublereal hval_(real *b, real *h1, real *h2, real *hp1, real *hp2, real *
 /* *********************************************************** */
 
     b1 = *b;
-    b2 = (float)1. - b1;
+    b2 = (double)1. - b1;
 
 /* Compute slope S and second differences D1 and D2 scaled */
 /*   by the separation between P1 and P2. */
@@ -2437,12 +2438,12 @@ doublereal hval_(real *b, real *h1, real *h2, real *hp1, real *hp2, real *
 /* Test the range of SIGMA. */
 
     sig = dabs(*sigma);
-    if (sig < (float)1e-9) {
+    if (sig < (double)1e-9) {
 
 /* Hermite cubic interpolation: */
 
 	ret_val = *h1 + b2 * (*hp1 + b2 * (d1 + b1 * (d1 - d2)));
-    } else if (sig <= (float).5) {
+    } else if (sig <= (double).5) {
 
 /* 0 < SIG .LE. .5.  Use approximations designed to avoid */
 /*   cancellation error in the hyperbolic functions. */
@@ -2463,11 +2464,11 @@ doublereal hval_(real *b, real *h1, real *h2, real *hp1, real *hp2, real *
 	e1 = exp(-sb1);
 	e2 = exp(-sb2);
 	ems = e1 * e2;
-	tm = (float)1. - ems;
+	tm = (double)1. - ems;
 	ts = tm * tm;
-	tm1 = (float)1. - e1;
-	tm2 = (float)1. - e2;
-	e = tm * (sig * (ems + (float)1.) - tm - tm);
+	tm1 = (double)1. - e1;
+	tm2 = (double)1. - e2;
+	e = tm * (sig * (ems + (double)1.) - tm - tm);
 	ret_val = *h1 + b2 * s + (tm * tm1 * tm2 * (d1 + d2) + sig * ((e2 * 
 		tm1 * tm1 - b1 * ts) * d1 + (e1 * tm2 * tm2 - b2 * ts) * d2)) 
 		/ (sig * e);
@@ -2475,22 +2476,22 @@ doublereal hval_(real *b, real *h1, real *h2, real *hp1, real *hp2, real *
     return ret_val;
 } /* hval_ */
 
-/* Subroutine */ int intrc0_(integer *n, real *plat, real *plon, real *x, 
-	real *y, real *z__, real *w, integer *list, integer *lptr, integer *
-	lend, integer *ist, real *pw, integer *ier)
+/* Subroutine */ int intrc0_(integer *n, doublereal *plat, doublereal *plon, doublereal *x, 
+	doublereal *y, doublereal *z__, doublereal *w, integer *list, integer *lptr, integer *
+	lend, integer *ist, doublereal *pw, integer *ier)
 {
     /* Builtin functions */
     double cos(doublereal), sin(doublereal);
 
     /* Local variables */
-    static real p[3], b1, b2, b3;
+    static doublereal p[3], b1, b2, b3;
     static integer i1, i2, i3, n1, n2;
-    static real s12;
+    static doublereal s12;
     static integer lp;
-    static real sum, ptn1, ptn2;
-    extern /* Subroutine */ int trfind_(integer *, real *, integer *, real *, 
-	    real *, real *, integer *, integer *, integer *, real *, real *, 
-	    real *, integer *, integer *, integer *);
+    static doublereal sum, ptn1, ptn2;
+    extern /* Subroutine */ int trfind_(integer *, doublereal *, integer *, doublereal *, 
+	    doublereal *, doublereal *, integer *, integer *, integer *, doublereal *, doublereal *, 
+	    doublereal *, integer *, integer *, integer *);
 
 
 /* *********************************************************** */
@@ -2620,6 +2621,9 @@ doublereal hval_(real *b, real *h1, real *h2, real *hp1, real *hp2, real *
 /*   barycentric coordinates. */
 
 	sum = b1 + b2 + b3;
+
+    //printf("%lf %lf %lf %lf\n", sum, b1, b2, b3);
+
 	b1 /= sum;
 	b2 /= sum;
 	b3 /= sum;
@@ -2659,7 +2663,7 @@ L1:
     s12 = x[n1] * x[n2] + y[n1] * y[n2] + z__[n1] * z__[n2];
     ptn2 = p[0] * x[n2] + p[1] * y[n2] + p[2] * z__[n2];
     b2 = ptn2 - s12 * ptn1;
-    if (b2 <= (float)0.) {
+    if (b2 <= (double)0.) {
 	goto L2;
     }
 
@@ -2694,14 +2698,14 @@ L2:
 /* Compute B2 = DET(P,N1,N2 X N1) = DET(Q,N1,N2 X N1)*(P,Q). */
 
     b2 = ptn2 - s12 * ptn1;
-    if (b2 <= (float)0.) {
+    if (b2 <= (double)0.) {
 	goto L2;
     }
 
 /* Compute B1 = DET(P,N2 X N1,N2) = DET(Q,N2 X N1,N2)*(P,Q). */
 
     b1 = ptn1 - s12 * ptn2;
-    if (b1 <= (float)0.) {
+    if (b1 <= (double)0.) {
 
 /* Q = N2. */
 
@@ -2738,38 +2742,38 @@ L13:
     return 0;
 } /* intrc0_ */
 
-/* Subroutine */ int intrc1_(integer *n, real *plat, real *plon, real *x, 
-	real *y, real *z__, real *f, integer *list, integer *lptr, integer *
-	lend, integer *iflgs, real *sigma, integer *iflgg, real *grad, 
-	integer *ist, real *fp, integer *ier)
+/* Subroutine */ int intrc1_(integer *n, doublereal *plat, doublereal *plon, doublereal *x, 
+	doublereal *y, doublereal *z__, doublereal *f, integer *list, integer *lptr, integer *
+	lend, integer *iflgs, doublereal *sigma, integer *iflgg, doublereal *grad, 
+	integer *ist, doublereal *fp, integer *ier)
 {
     /* Builtin functions */
     double cos(doublereal), sin(doublereal), sqrt(doublereal);
 
     /* Local variables */
-    static real a;
+    static doublereal a;
     static integer i__;
-    static real p[3], q[3], b1, b2, b3, g1[3], g2[3];
+    static doublereal p[3], q[3], b1, b2, b3, g1[3], g2[3];
     static integer i1, i2, i3;
-    static real g3[3];
+    static doublereal g3[3];
     static integer n1, n2;
-    static real p1[3], p2[3], p3[3], s1, s2, s3, fq, gq[3], s12;
+    static doublereal p1[3], p2[3], p3[3], s1, s2, s3, fq, gq[3], s12;
     static integer lp, nn;
-    static real dum[3], gqn, sum, ptn1, ptn2;
-    extern doublereal fval_(real *, real *, real *, real *, real *, real *, 
-	    real *, real *, real *, real *, real *, real *, real *, real *, 
-	    real *);
+    static doublereal dum[3], gqn, sum, ptn1, ptn2;
+    extern doublereal fval_(doublereal *, doublereal *, doublereal *, doublereal *, doublereal *, doublereal *, 
+	    doublereal *, doublereal *, doublereal *, doublereal *, doublereal *, doublereal *, doublereal *, doublereal *, 
+	    doublereal *);
     static integer ierr;
-    static real ptgq;
-    extern /* Subroutine */ int gradl_(integer *, integer *, real *, real *, 
-	    real *, real *, integer *, integer *, integer *, real *, integer *
+    static doublereal ptgq;
+    extern /* Subroutine */ int gradl_(integer *, integer *, doublereal *, doublereal *, 
+	    doublereal *, doublereal *, integer *, integer *, integer *, doublereal *, integer *
 	    );
-    static real qnorm;
-    extern doublereal arclen_(real *, real *);
-    extern /* Subroutine */ int arcint_(real *, real *, real *, real *, real *
-	    , real *, real *, real *, real *, real *, real *), trfind_(
-	    integer *, real *, integer *, real *, real *, real *, integer *, 
-	    integer *, integer *, real *, real *, real *, integer *, integer *
+    static doublereal qnorm;
+    extern doublereal arclen_(doublereal *, doublereal *);
+    extern /* Subroutine */ int arcint_(doublereal *, doublereal *, doublereal *, doublereal *, doublereal *
+	    , doublereal *, doublereal *, doublereal *, doublereal *, doublereal *, doublereal *), trfind_(
+	    integer *, doublereal *, integer *, doublereal *, doublereal *, doublereal *, integer *, 
+	    integer *, integer *, doublereal *, doublereal *, doublereal *, integer *, integer *
 	    , integer *);
     extern integer lstptr_(integer *, integer *, integer *, integer *);
 
@@ -3059,7 +3063,7 @@ L2:
     s12 = x[n1] * x[n2] + y[n1] * y[n2] + z__[n1] * z__[n2];
     ptn2 = p[0] * x[n2] + p[1] * y[n2] + p[2] * z__[n2];
     b2 = ptn2 - s12 * ptn1;
-    if (b2 <= (float)0.) {
+    if (b2 <= (double)0.) {
 	goto L3;
     }
 
@@ -3094,14 +3098,14 @@ L3:
 /* Compute B2 = Det(P,N1,N2 X N1) = Det(Q,N1,N2 X N1)*(P,Q). */
 
     b2 = ptn2 - s12 * ptn1;
-    if (b2 <= (float)0.) {
+    if (b2 <= (double)0.) {
 	goto L3;
     }
 
 /* Compute B1 = Det(P,N2 X N1,N2) = Det(Q,N2 X N1,N2)*(P,Q). */
 
     b1 = ptn1 - s12 * ptn2;
-    if (b1 <= (float)0.) {
+    if (b1 <= (double)0.) {
 
 /* Q = N2.  Store value, coordinates, and gradient at Q. */
 
@@ -3129,7 +3133,7 @@ L3:
 	a = arclen_(q, p);
 	ptgq = p[0] * gq[0] + p[1] * gq[1] + p[2] * gq[2];
 	*fp = fq;
-	if (a != (float)0.) {
+	if (a != (double)0.) {
 	    *fp += ptgq * a / sin(a);
 	}
 	*ier = 1;
@@ -3150,7 +3154,7 @@ L3:
 /* Compute the central projection of Q onto P2-P1 and */
 /*   normalize to obtain Q. */
 
-    qnorm = (float)0.;
+    qnorm = (double)0.;
     for (i__ = 1; i__ <= 3; ++i__) {
 	q[i__ - 1] = b1 * p1[i__ - 1] + b2 * p2[i__ - 1];
 	qnorm += q[i__ - 1] * q[i__ - 1];
@@ -3222,14 +3226,14 @@ L13:
     return 0;
 } /* intrc1_ */
 
-/* Subroutine */ int rotate_(integer *n, real *c__, real *s, real *x, real *y)
+/* Subroutine */ int rotate_(integer *n, doublereal *c__, doublereal *s, doublereal *x, doublereal *y)
 {
     /* System generated locals */
     integer i__1;
 
     /* Local variables */
     static integer i__;
-    static real xi, yi;
+    static doublereal xi, yi;
 
 
 /* *********************************************************** */
@@ -3289,10 +3293,10 @@ L13:
     return 0;
 } /* rotate_ */
 
-/* Subroutine */ int setup_(real *xi, real *yi, real *wi, real *wk, real *s1, 
-	real *s2, real *wt, real *row)
+/* Subroutine */ int setup_(doublereal *xi, doublereal *yi, doublereal *wi, doublereal *wk, doublereal *s1, 
+	doublereal *s2, doublereal *wt, doublereal *row)
 {
-    static real w1, w2;
+    static doublereal w1, w2;
 
 
 /* *********************************************************** */
@@ -3359,7 +3363,7 @@ L13:
 } /* setup_ */
 
 /* Subroutine */ int sgprnt_(integer *n, integer *lunit, integer *list, 
-	integer *lptr, integer *lend, real *sigma)
+	integer *lptr, integer *lend, doublereal *sigma)
 {
     /* Initialized data */
 
@@ -3388,7 +3392,7 @@ i5,\002 NODES\002//1x,18x,\002N1\002,5x,\002N2\002,8x,\002TENSION\002//)";
 
     /* Local variables */
     static integer n1, n2, na, nb, ne, nl, nm1, lp1, lp2, nat;
-    static real sig;
+    static doublereal sig;
     static integer lpl, lun;
     static logical error;
     extern integer lstptr_(integer *, integer *, integer *, integer *);
@@ -3530,7 +3534,7 @@ L1:
 	    s_wsfe(&io___311);
 	    do_fio(&c__1, (char *)&n1, (ftnlen)sizeof(integer));
 	    do_fio(&c__1, (char *)&n2, (ftnlen)sizeof(integer));
-	    do_fio(&c__1, (char *)&sig, (ftnlen)sizeof(real));
+	    do_fio(&c__1, (char *)&sig, (ftnlen)sizeof(doublereal));
 	    e_wsfe();
 	}
 	if (error) {
@@ -3538,8 +3542,8 @@ L1:
 	    s_wsfe(&io___312);
 	    do_fio(&c__1, (char *)&n1, (ftnlen)sizeof(integer));
 	    do_fio(&c__1, (char *)&n2, (ftnlen)sizeof(integer));
-	    do_fio(&c__1, (char *)&sig, (ftnlen)sizeof(real));
-	    do_fio(&c__1, (char *)&sigma[lp2], (ftnlen)sizeof(real));
+	    do_fio(&c__1, (char *)&sig, (ftnlen)sizeof(doublereal));
+	    do_fio(&c__1, (char *)&sigma[lp2], (ftnlen)sizeof(doublereal));
 	    e_wsfe();
 	}
 	++nl;
@@ -3607,14 +3611,14 @@ L4:
 
 } /* sgprnt_ */
 
-doublereal sig0_(integer *n1, integer *n2, integer *n, real *x, real *y, real 
-	*z__, real *h__, integer *list, integer *lptr, integer *lend, real *
-	grad, integer *iflgb, real *hbnd, real *tol, integer *iflgs, real *
+doublereal sig0_(integer *n1, integer *n2, integer *n, doublereal *x, doublereal *y, doublereal 
+	*z__, doublereal *h__, integer *list, integer *lptr, integer *lend, doublereal *
+	grad, integer *iflgb, doublereal *hbnd, doublereal *tol, integer *iflgs, doublereal *
 	sigma, integer *ier)
 {
     /* Initialized data */
 
-    static real sbig = (float)85.;
+    static doublereal sbig = (double)85.;
     static integer lun = -1;
 
     /* Format strings */
@@ -3630,26 +3634,26 @@ i4,\002, UPPER BOUND = \002,e15.8)";
 
     /* System generated locals */
     integer i__1;
-    real ret_val, r__1, r__2, r__3, r__4, r__5, r__6;
+    doublereal ret_val, r__1, r__2, r__3, r__4, r__5, r__6;
 
     /* Builtin functions */
     integer s_wsfe(cilist *), do_fio(integer *, char *, ftnlen), e_wsfe();
-    double sqrt(doublereal), r_sign(real *, real *), exp(doublereal), log(
+    double sqrt(doublereal), r_sign(doublereal *, doublereal *), exp(doublereal), log(
 	    doublereal);
 
     /* Local variables */
-    static real a, b, c__, d__, e, f, r__, s, t, a0, b0, c1, c2, d0, d2, f0, 
+    static doublereal a, b, c__, d__, e, f, r__, s, t, a0, b0, c1, c2, d0, d2, f0, 
 	    h1, h2, p1[3], p2[3], s1, s2, t0, t1, t2, aa, al, rf, tm, un[3];
     static integer lp1, lp2;
-    static real bnd, scm, sig, ems;
+    static doublereal bnd, scm, sig, ems;
     static integer lpl, nit;
-    static real ssm, d1pd2, fneg, dsig, dmax__, fmax, sneg, ftol, rsig, rtol, 
+    static doublereal ssm, d1pd2, fneg, dsig, dmax__, fmax, sneg, ftol, rsig, rtol, 
 	    stol, coshm, sinhm, ssinh;
-    extern doublereal store_(real *);
-    static real unorm;
-    extern doublereal arclen_(real *, real *);
-    static real coshmm;
-    extern /* Subroutine */ int snhcsh_(real *, real *, real *, real *);
+    extern doublereal store_(doublereal *);
+    static doublereal unorm;
+    extern doublereal arclen_(doublereal *, doublereal *);
+    static doublereal coshmm;
+    extern /* Subroutine */ int snhcsh_(doublereal *, doublereal *, doublereal *, doublereal *);
 
     /* Fortran I/O blocks */
     static cilist io___323 = { 0, 0, 0, fmt_100, 0 };
@@ -3793,25 +3797,25 @@ i4,\002, UPPER BOUND = \002,e15.8)";
     --sigma;
 
     /* Function Body */
-    rf = (real) (*iflgb);
+    rf = (doublereal) (*iflgb);
     bnd = *hbnd;
 
 /* Print a heading. */
 
-    if (lun >= 0 && rf < (float)0.) {
+    if (lun >= 0 && rf < (double)0.) {
 	io___323.ciunit = lun;
 	s_wsfe(&io___323);
 	do_fio(&c__1, (char *)&(*n1), (ftnlen)sizeof(integer));
 	do_fio(&c__1, (char *)&(*n2), (ftnlen)sizeof(integer));
-	do_fio(&c__1, (char *)&bnd, (ftnlen)sizeof(real));
+	do_fio(&c__1, (char *)&bnd, (ftnlen)sizeof(doublereal));
 	e_wsfe();
     }
-    if (lun >= 0 && rf > (float)0.) {
+    if (lun >= 0 && rf > (double)0.) {
 	io___324.ciunit = lun;
 	s_wsfe(&io___324);
 	do_fio(&c__1, (char *)&(*n1), (ftnlen)sizeof(integer));
 	do_fio(&c__1, (char *)&(*n2), (ftnlen)sizeof(integer));
-	do_fio(&c__1, (char *)&bnd, (ftnlen)sizeof(real));
+	do_fio(&c__1, (char *)&bnd, (ftnlen)sizeof(doublereal));
 	e_wsfe();
     }
 
@@ -3821,7 +3825,7 @@ i4,\002, UPPER BOUND = \002,e15.8)";
 /* Computing MAX */
     i__1 = max(*n1,*n2);
     if (min(*n1,*n2) < 1 || *n1 == *n2 || max(i__1,3) > *n || dabs(rf) != (
-	    float)1.) {
+	    double)1.) {
 	goto L11;
     }
     *ier = -2;
@@ -3876,7 +3880,7 @@ L4:
     un[1] = p1[2] * p2[0] - p1[0] * p2[2];
     un[2] = p1[0] * p2[1] - p1[1] * p2[0];
     unorm = sqrt(un[0] * un[0] + un[1] * un[1] + un[2] * un[2]);
-    if (unorm == (float)0. || al == (float)0.) {
+    if (unorm == (double)0. || al == (double)0.) {
 	goto L11;
     }
 
@@ -3885,7 +3889,7 @@ L4:
     h1 = h__[*n1];
     h2 = h__[*n2];
     *ier = -3;
-    if (rf < (float)0. && dmin(h1,h2) < bnd || rf > (float)0. && bnd < dmax(
+    if (rf < (double)0. && dmin(h1,h2) < bnd || rf > (double)0. && bnd < dmax(
 	    h1,h2)) {
 	goto L11;
     }
@@ -3900,7 +3904,7 @@ L4:
 	    n2 * 3 + 3] * p1[2]) / unorm;
     *ier = 1;
     sig = sbig;
-    if (h1 == bnd && rf * s1 > (float)0. || h2 == bnd && rf * s2 < (float)0.) 
+    if (h1 == bnd && rf * s1 > (double)0. || h2 == bnd && rf * s2 < (double)0.) 
 	    {
 	goto L10;
     }
@@ -3908,8 +3912,8 @@ L4:
 /* Test for SIG = 0 sufficient. */
 
     *ier = 0;
-    sig = (float)0.;
-    if (rf * s1 <= (float)0. && rf * s2 >= (float)0.) {
+    sig = (double)0.;
+    if (rf * s1 <= (double)0. && rf * s2 >= (double)0.) {
 	goto L10;
     }
 
@@ -3918,26 +3922,26 @@ L4:
 /*     B0*R**2 + (A0/3)*R**3), where R(A) = (A2-A)/AL. */
 
     s = h2 - h1;
-    t0 = s * (float)3. - s1 - s2;
-    a0 = (s - t0) * (float)3.;
+    t0 = s * (double)3. - s1 - s2;
+    a0 = (s - t0) * (double)3.;
     b0 = t0 - s2;
     d0 = t0 * t0 - s1 * s2;
 
 /*   H0 has local extrema in (A1,A2) iff S1*S2 < 0 or */
 /*     (T0*(S1+S2) < 0 and D0 .GE. 0). */
 
-    if (s1 * s2 >= (float)0. && (t0 * (s1 + s2) >= (float)0. || d0 < (float)
+    if (s1 * s2 >= (double)0. && (t0 * (s1 + s2) >= (double)0. || d0 < (double)
 	    0.)) {
 	goto L10;
     }
-    if (a0 == (float)0.) {
+    if (a0 == (double)0.) {
 
 /*   H0 is quadratic and has an extremum at R = -S2/(2*B0). */
 /*     H0(R) = H2 + S2**2/(4*B0).  Note that A0 = 0 implies */
 /*     2*B0 = S1-S2, and S1*S2 < 0 implies B0 .NE. 0. */
 /*     Also, the extremum is a min iff HBND is a lower bound. */
 
-	f0 = (bnd - h2 - s2 * s2 / (b0 * (float)4.)) * rf;
+	f0 = (bnd - h2 - s2 * s2 / (b0 * (double)4.)) * rf;
     } else {
 
 /*   A0 .NE. 0 and H0 has extrema at R = (-B0 +/- SQRT(D0))/ */
@@ -3949,17 +3953,17 @@ L4:
 	r__1 = sqrt(d0);
 	t = -b0 - r_sign(&r__1, &b0);
 	r__ = t / a0;
-	if (rf * b0 > (float)0.) {
+	if (rf * b0 > (double)0.) {
 	    r__ = s2 / t;
 	}
-	f0 = (bnd - h2 - (s2 * b0 + d0 * (float)2. * r__) / (a0 * (float)3.)) 
+	f0 = (bnd - h2 - (s2 * b0 + d0 * (double)2. * r__) / (a0 * (double)3.)) 
 		* rf;
     }
 
 /*   F0 .GE. 0 iff SIG = 0 is sufficient to satisfy the */
 /*     constraint. */
 
-    if (f0 >= (float)0.) {
+    if (f0 >= (double)0.) {
 	goto L10;
     }
 
@@ -3979,7 +3983,7 @@ L4:
 /* Computing MIN */
     r__5 = (r__1 = h1 - bnd, dabs(r__1)), r__6 = (r__2 = h2 - bnd, dabs(r__2))
 	    ;
-    r__3 = (float).001, r__4 = dmin(r__5,r__6);
+    r__3 = (double).001, r__4 = dmin(r__5,r__6);
     fmax = dmax(r__3,r__4);
 /* Computing MAX */
     r__3 = (r__1 = h1 - bnd, dabs(r__1)), r__4 = (r__2 = h2 - bnd, dabs(r__2))
@@ -3988,15 +3992,15 @@ L4:
 /* Computing MAX */
     r__1 = dabs(s1), r__2 = dabs(s2);
     sig = dmax(r__1,r__2) / t;
-    dmax__ = sig * ((float)1. - t / fmax);
+    dmax__ = sig * ((double)1. - t / fmax);
     sneg = sig - dmax__;
     if (lun >= 0) {
 	io___349.ciunit = lun;
 	s_wsfe(&io___349);
-	do_fio(&c__1, (char *)&sig, (ftnlen)sizeof(real));
-	do_fio(&c__1, (char *)&sneg, (ftnlen)sizeof(real));
-	do_fio(&c__1, (char *)&f0, (ftnlen)sizeof(real));
-	do_fio(&c__1, (char *)&fmax, (ftnlen)sizeof(real));
+	do_fio(&c__1, (char *)&sig, (ftnlen)sizeof(doublereal));
+	do_fio(&c__1, (char *)&sneg, (ftnlen)sizeof(doublereal));
+	do_fio(&c__1, (char *)&f0, (ftnlen)sizeof(doublereal));
+	do_fio(&c__1, (char *)&fmax, (ftnlen)sizeof(doublereal));
 	e_wsfe();
     }
     dsig = sig;
@@ -4009,20 +4013,20 @@ L4:
 /*   relative tolerance RTOL = 100*Macheps. */
 
     ftol = dabs(*tol);
-    rtol = (float)1.;
+    rtol = (double)1.;
 L5:
-    rtol /= (float)2.;
-    r__1 = rtol + (float)1.;
-    if (store_(&r__1) > (float)1.) {
+    rtol /= (double)2.;
+    r__1 = rtol + (double)1.;
+    if (store_(&r__1) > (double)1.) {
 	goto L5;
     }
-    rtol *= (float)200.;
+    rtol *= (double)200.;
 
 /* Top of loop:  compute F. */
 
 L6:
     ems = exp(-sig);
-    if (sig <= (float).5) {
+    if (sig <= (double).5) {
 
 /*   Use approximations designed to avoid cancellation error */
 /*     (associated with small SIG) in the modified hyperbolic */
@@ -4039,13 +4043,13 @@ L6:
 /*   Scale SINHM and COSHM by 2*exp(-SIG) in order to avoid */
 /*     overflow. */
 
-	tm = (float)1. - ems;
-	ssinh = tm * (ems + (float)1.);
-	ssm = ssinh - sig * (float)2. * ems;
+	tm = (double)1. - ems;
+	ssinh = tm * (ems + (double)1.);
+	ssm = ssinh - sig * (double)2. * ems;
 	scm = tm * tm;
 	c1 = sig * scm * d2 - ssm * d1pd2;
 	c2 = sig * ssinh * d2 - scm * d1pd2;
-	aa = (sig * tm * d2 + (tm - sig) * d1pd2) * (float)2.;
+	aa = (sig * tm * d2 + (tm - sig) * d1pd2) * (double)2.;
 	a = ems * aa;
 	e = sig * ssinh - scm - scm;
     }
@@ -4058,26 +4062,26 @@ L6:
     b = e * s2 - c2;
     c__ = c2 + c1;
     d__ = b * b - a * c__;
-    f = (float)0.;
-    if (aa * c__ == (float)0. && b == (float)0.) {
+    f = (double)0.;
+    if (aa * c__ == (double)0. && b == (double)0.) {
 	goto L7;
     }
     f = fmax;
-    if (d__ < (float)0.) {
+    if (d__ < (double)0.) {
 	goto L7;
     }
     t1 = sqrt(d__);
     t = -b - r_sign(&t1, &b);
-    rsig = (float)0.;
-    if (rf * b < (float)0. && aa != (float)0.) {
-	if (t / aa > (float)0.) {
+    rsig = (double)0.;
+    if (rf * b < (double)0. && aa != (double)0.) {
+	if (t / aa > (double)0.) {
 	    rsig = sig + log(t / aa);
 	}
     }
-    if ((rf * b > (float)0. || aa == (float)0.) && c__ / t > (float)0.) {
+    if ((rf * b > (double)0. || aa == (double)0.) && c__ / t > (double)0.) {
 	rsig = log(c__ / t);
     }
-    if ((rsig <= (float)0. || rsig >= sig) && b != (float)0.) {
+    if ((rsig <= (double)0. || rsig >= sig) && b != (double)0.) {
 	goto L7;
     }
 
@@ -4093,11 +4097,11 @@ L7:
 	io___376.ciunit = lun;
 	s_wsfe(&io___376);
 	do_fio(&c__1, (char *)&nit, (ftnlen)sizeof(integer));
-	do_fio(&c__1, (char *)&sig, (ftnlen)sizeof(real));
-	do_fio(&c__1, (char *)&f, (ftnlen)sizeof(real));
+	do_fio(&c__1, (char *)&sig, (ftnlen)sizeof(doublereal));
+	do_fio(&c__1, (char *)&f, (ftnlen)sizeof(doublereal));
 	e_wsfe();
     }
-    if (f0 * f < (float)0.) {
+    if (f0 * f < (double)0.) {
 
 /*   F0*F < 0.  Update (SNEG,FNEG) to (SG0,F0) so that F and */
 /*     FNEG always have opposite signs.  If SIG is closer to */
@@ -4117,14 +4121,14 @@ L7:
 /*   Test for convergence. */
 
     stol = rtol * sig;
-    if (dabs(dmax__) <= stol || f >= (float)0. && f <= ftol || dabs(f) <= 
+    if (dabs(dmax__) <= stol || f >= (double)0. && f <= ftol || dabs(f) <= 
 	    rtol) {
 	goto L10;
     }
 
 /*   Test for F0 = F = FMAX or F < 0 on the first iteration. */
 
-    if (f0 != f && (nit > 1 || f > (float)0.)) {
+    if (f0 != f && (nit > 1 || f > (double)0.)) {
 	goto L9;
     }
 
@@ -4145,18 +4149,18 @@ L9:
     if (lun >= 0) {
 	io___379.ciunit = lun;
 	s_wsfe(&io___379);
-	do_fio(&c__1, (char *)&dsig, (ftnlen)sizeof(real));
+	do_fio(&c__1, (char *)&dsig, (ftnlen)sizeof(doublereal));
 	e_wsfe();
     }
-    if (dabs(dsig) > dabs(dmax__) || dsig * dmax__ > (float)0.) {
+    if (dabs(dsig) > dabs(dmax__) || dsig * dmax__ > (double)0.) {
 	goto L8;
     }
 
 /*   Restrict the step-size such that abs(DSIG) .GE. STOL/2. */
 /*     Note that DSIG and DMAX have opposite signs. */
 
-    if (dabs(dsig) < stol / (float)2.) {
-	r__1 = stol / (float)2.;
+    if (dabs(dsig) < stol / (double)2.) {
+	r__1 = stol / (double)2.;
 	dsig = -r_sign(&r__1, &dmax__);
     }
 
@@ -4181,18 +4185,18 @@ L10:
 /* Error termination. */
 
 L11:
-    ret_val = (float)-1.;
+    ret_val = (double)-1.;
     return ret_val;
 } /* sig0_ */
 
-doublereal sig1_(integer *n1, integer *n2, integer *n, real *x, real *y, real 
-	*z__, real *h__, integer *list, integer *lptr, integer *lend, real *
-	grad, integer *iflgb, real *hpbnd, real *tol, integer *iflgs, real *
+doublereal sig1_(integer *n1, integer *n2, integer *n, doublereal *x, doublereal *y, doublereal 
+	*z__, doublereal *h__, integer *list, integer *lptr, integer *lend, doublereal *
+	grad, integer *iflgb, doublereal *hpbnd, doublereal *tol, integer *iflgs, doublereal *
 	sigma, integer *ier)
 {
     /* Initialized data */
 
-    static real sbig = (float)85.;
+    static doublereal sbig = (double)85.;
     static integer lun = -1;
 
     /* Format strings */
@@ -4208,25 +4212,25 @@ i4,\002, UPPER BOUND = \002,e15.8)";
 
     /* System generated locals */
     integer i__1;
-    real ret_val, r__1, r__2;
+    doublereal ret_val, r__1, r__2;
 
     /* Builtin functions */
     integer s_wsfe(cilist *), do_fio(integer *, char *, ftnlen), e_wsfe();
-    double sqrt(doublereal), exp(doublereal), r_sign(real *, real *);
+    double sqrt(doublereal), exp(doublereal), r_sign(doublereal *, doublereal *);
 
     /* Local variables */
-    static real a, e, f, s, a0, b0, c0, c1, c2, d0, d1, d2, f0, p1[3], p2[3], 
+    static doublereal a, e, f, s, a0, b0, c0, c1, c2, d0, d1, d2, f0, p1[3], p2[3], 
 	    s1, s2, t0, t1, t2, al, rf, tm, un[3];
     static integer lp1, lp2;
-    static real bnd, sig, ems;
+    static doublereal bnd, sig, ems;
     static integer lpl, nit;
-    static real ems2, d1pd2, fneg, dsig, dmax__, fmax, sinh__, ftol, rtol, 
+    static doublereal ems2, d1pd2, fneg, dsig, dmax__, fmax, sinh__, ftol, rtol, 
 	    stol, coshm, sinhm;
-    extern doublereal store_(real *);
-    static real unorm;
-    extern doublereal arclen_(real *, real *);
-    static real coshmm;
-    extern /* Subroutine */ int snhcsh_(real *, real *, real *, real *);
+    extern doublereal store_(doublereal *);
+    static doublereal unorm;
+    extern doublereal arclen_(doublereal *, doublereal *);
+    static doublereal coshmm;
+    extern /* Subroutine */ int snhcsh_(doublereal *, doublereal *, doublereal *, doublereal *);
 
     /* Fortran I/O blocks */
     static cilist io___384 = { 0, 0, 0, fmt_100, 0 };
@@ -4371,25 +4375,25 @@ i4,\002, UPPER BOUND = \002,e15.8)";
     --sigma;
 
     /* Function Body */
-    rf = (real) (*iflgb);
+    rf = (doublereal) (*iflgb);
     bnd = *hpbnd;
 
 /* Print a heading. */
 
-    if (lun >= 0 && rf < (float)0.) {
+    if (lun >= 0 && rf < (double)0.) {
 	io___384.ciunit = lun;
 	s_wsfe(&io___384);
 	do_fio(&c__1, (char *)&(*n1), (ftnlen)sizeof(integer));
 	do_fio(&c__1, (char *)&(*n2), (ftnlen)sizeof(integer));
-	do_fio(&c__1, (char *)&bnd, (ftnlen)sizeof(real));
+	do_fio(&c__1, (char *)&bnd, (ftnlen)sizeof(doublereal));
 	e_wsfe();
     }
-    if (lun >= 0 && rf > (float)0.) {
+    if (lun >= 0 && rf > (double)0.) {
 	io___385.ciunit = lun;
 	s_wsfe(&io___385);
 	do_fio(&c__1, (char *)&(*n1), (ftnlen)sizeof(integer));
 	do_fio(&c__1, (char *)&(*n2), (ftnlen)sizeof(integer));
-	do_fio(&c__1, (char *)&bnd, (ftnlen)sizeof(real));
+	do_fio(&c__1, (char *)&bnd, (ftnlen)sizeof(doublereal));
 	e_wsfe();
     }
 
@@ -4399,7 +4403,7 @@ i4,\002, UPPER BOUND = \002,e15.8)";
 /* Computing MAX */
     i__1 = max(*n1,*n2);
     if (min(*n1,*n2) < 1 || *n1 == *n2 || max(i__1,3) > *n || dabs(rf) != (
-	    float)1.) {
+	    double)1.) {
 	goto L11;
     }
     *ier = -2;
@@ -4454,7 +4458,7 @@ L4:
     un[1] = p1[2] * p2[0] - p1[0] * p2[2];
     un[2] = p1[0] * p2[1] - p1[1] * p2[0];
     unorm = sqrt(un[0] * un[0] + un[1] * un[1] + un[2] * un[2]);
-    if (unorm == (float)0. || al == (float)0.) {
+    if (unorm == (double)0. || al == (double)0.) {
 	goto L11;
     }
 
@@ -4474,7 +4478,7 @@ L4:
     r__1 = min(s1,s2);
 /* Computing MAX */
     r__2 = max(s1,s2);
-    if (rf < (float)0. && dmin(r__1,s) < bnd || rf > (float)0. && bnd < dmax(
+    if (rf < (double)0. && dmin(r__1,s) < bnd || rf > (double)0. && bnd < dmax(
 	    r__2,s)) {
 	goto L11;
     }
@@ -4492,8 +4496,8 @@ L4:
 /*   AL, where R = (T2-T)/AL. */
 
     *ier = 0;
-    sig = (float)0.;
-    t0 = s * (float)3. - s1 - s2;
+    sig = (double)0.;
+    t0 = s * (double)3. - s1 - s2;
     b0 = t0 - s2;
     c0 = t0 - s1;
     a0 = -b0 - c0;
@@ -4502,7 +4506,7 @@ L4:
 /*     B0*C0 > 0 and the third derivative of H0 has the */
 /*     sign of A0. */
 
-    if (b0 * c0 <= (float)0. || a0 * rf > (float)0.) {
+    if (b0 * c0 <= (double)0. || a0 * rf > (double)0.) {
 	goto L10;
     }
 
@@ -4510,7 +4514,7 @@ L4:
 
     d0 = t0 * t0 - s1 * s2;
     f0 = (bnd + d0 / (a0 * al)) * rf;
-    if (f0 >= (float)0.) {
+    if (f0 >= (double)0.) {
 	goto L10;
     }
 
@@ -4528,21 +4532,21 @@ L4:
 /*   significant relative to exp(SIG). */
 
     fmax = (bnd - s / al) * rf;
-    sig = (float)2. - a0 / ((al * bnd - s) * (float)3.);
+    sig = (double)2. - a0 / ((al * bnd - s) * (double)3.);
     if (lun >= 0) {
 	io___405.ciunit = lun;
 	s_wsfe(&io___405);
-	do_fio(&c__1, (char *)&f0, (ftnlen)sizeof(real));
-	do_fio(&c__1, (char *)&fmax, (ftnlen)sizeof(real));
-	do_fio(&c__1, (char *)&sig, (ftnlen)sizeof(real));
+	do_fio(&c__1, (char *)&f0, (ftnlen)sizeof(doublereal));
+	do_fio(&c__1, (char *)&fmax, (ftnlen)sizeof(doublereal));
+	do_fio(&c__1, (char *)&sig, (ftnlen)sizeof(doublereal));
 	e_wsfe();
     }
-    r__1 = sig * exp(-sig) + (float).5;
-    if (store_(&r__1) == (float).5) {
+    r__1 = sig * exp(-sig) + (double).5;
+    if (store_(&r__1) == (double).5) {
 	goto L10;
     }
     dsig = sig;
-    dmax__ = sig * (float)-2.;
+    dmax__ = sig * (double)-2.;
     fneg = fmax;
     d1 = s - s1;
     d2 = s2 - s;
@@ -4553,19 +4557,19 @@ L4:
 /*   relative tolerance RTOL = 100*Macheps. */
 
     ftol = dabs(*tol);
-    rtol = (float)1.;
+    rtol = (double)1.;
 L5:
-    rtol /= (float)2.;
-    r__1 = rtol + (float)1.;
-    if (store_(&r__1) > (float)1.) {
+    rtol /= (double)2.;
+    r__1 = rtol + (double)1.;
+    if (store_(&r__1) > (double)1.) {
 	goto L5;
     }
-    rtol *= (float)200.;
+    rtol *= (double)200.;
 
 /* Top of loop:  compute F. */
 
 L6:
-    if (sig <= (float).5) {
+    if (sig <= (double).5) {
 
 /*   Use approximations designed to avoid cancellation */
 /*     error (associated with small SIG) in the modified */
@@ -4583,8 +4587,8 @@ L6:
 
 	ems = exp(-sig);
 	ems2 = ems + ems;
-	tm = (float)1. - ems;
-	sinh__ = tm * (ems + (float)1.);
+	tm = (double)1. - ems;
+	sinh__ = tm * (ems + (double)1.);
 	sinhm = sinh__ - sig * ems2;
 	coshm = tm * tm;
 	c1 = sig * coshm * d2 - sinhm * d1pd2;
@@ -4599,8 +4603,8 @@ L6:
 
     f = fmax;
     t1 = a * (c2 + c1);
-    if (t1 >= (float)0.) {
-	if (c1 * (sig * coshm * d1 - sinhm * d1pd2) < (float)0.) {
+    if (t1 >= (double)0.) {
+	if (c1 * (sig * coshm * d1 - sinhm * d1pd2) < (double)0.) {
 
 /*   HP(R) = (B+SIGN(A)*SQRT(A*C))/(AL*E) at the critical */
 /*     value of R, where A = C2-C1, B = E*S2-C2, and C = C2 + */
@@ -4617,11 +4621,11 @@ L6:
 	io___428.ciunit = lun;
 	s_wsfe(&io___428);
 	do_fio(&c__1, (char *)&nit, (ftnlen)sizeof(integer));
-	do_fio(&c__1, (char *)&sig, (ftnlen)sizeof(real));
-	do_fio(&c__1, (char *)&f, (ftnlen)sizeof(real));
+	do_fio(&c__1, (char *)&sig, (ftnlen)sizeof(doublereal));
+	do_fio(&c__1, (char *)&f, (ftnlen)sizeof(doublereal));
 	e_wsfe();
     }
-    if (f0 * f < (float)0.) {
+    if (f0 * f < (double)0.) {
 
 /*   F0*F < 0.  Update (SNEG,FNEG) to (SG0,F0) so that F */
 /*     and FNEG always have opposite signs.  If SIG is closer */
@@ -4642,11 +4646,11 @@ L6:
 /*   Test for convergence. */
 
     stol = rtol * sig;
-    if (dabs(dmax__) <= stol || f >= (float)0. && f <= ftol || dabs(f) <= 
+    if (dabs(dmax__) <= stol || f >= (double)0. && f <= ftol || dabs(f) <= 
 	    rtol) {
 	goto L10;
     }
-    if (f0 * f < (float)0. || dabs(f) < dabs(f0)) {
+    if (f0 * f < (double)0. || dabs(f) < dabs(f0)) {
 	goto L8;
     }
 
@@ -4666,18 +4670,18 @@ L8:
     if (lun >= 0) {
 	io___431.ciunit = lun;
 	s_wsfe(&io___431);
-	do_fio(&c__1, (char *)&dsig, (ftnlen)sizeof(real));
+	do_fio(&c__1, (char *)&dsig, (ftnlen)sizeof(doublereal));
 	e_wsfe();
     }
-    if (dabs(dsig) > dabs(dmax__) || dsig * dmax__ > (float)0.) {
+    if (dabs(dsig) > dabs(dmax__) || dsig * dmax__ > (double)0.) {
 	goto L7;
     }
 
 /*   Restrict the step-size such that abs(DSIG) .GE. STOL/2. */
 /*     Note that DSIG and DMAX have opposite signs. */
 
-    if (dabs(dsig) < stol / (float)2.) {
-	r__1 = stol / (float)2.;
+    if (dabs(dsig) < stol / (double)2.) {
+	r__1 = stol / (double)2.;
 	dsig = -r_sign(&r__1, &dmax__);
     }
 
@@ -4702,17 +4706,17 @@ L10:
 /* Error termination. */
 
 L11:
-    ret_val = (float)-1.;
+    ret_val = (double)-1.;
     return ret_val;
 } /* sig1_ */
 
-doublereal sig2_(integer *n1, integer *n2, integer *n, real *x, real *y, real 
-	*z__, real *h__, integer *list, integer *lptr, integer *lend, real *
-	grad, real *tol, integer *iflgs, real *sigma, integer *ier)
+doublereal sig2_(integer *n1, integer *n2, integer *n, doublereal *x, doublereal *y, doublereal 
+	*z__, doublereal *h__, integer *list, integer *lptr, integer *lend, doublereal *
+	grad, doublereal *tol, integer *iflgs, doublereal *sigma, integer *ier)
 {
     /* Initialized data */
 
-    static real sbig = (float)85.;
+    static doublereal sbig = (double)85.;
     static integer lun = -1;
 
     /* Format strings */
@@ -4723,22 +4727,22 @@ doublereal sig2_(integer *n1, integer *n2, integer *n, real *x, real *y, real
 
     /* System generated locals */
     integer i__1;
-    real ret_val, r__1, r__2;
+    doublereal ret_val, r__1, r__2;
 
     /* Builtin functions */
     integer s_wsfe(cilist *), do_fio(integer *, char *, ftnlen), e_wsfe();
     double sqrt(doublereal), exp(doublereal);
 
     /* Local variables */
-    static real f, s, t, d1, d2, p1[3], p2[3], t1, al, fp, un[3];
+    static doublereal f, s, t, d1, d2, p1[3], p2[3], t1, al, fp, un[3];
     static integer lp1, lp2;
-    static real tp1, d1d2, sig, ems;
+    static doublereal tp1, d1d2, sig, ems;
     static integer lpl, nit;
-    static real ssm, dsig, ftol, rtol, coshm, sinhm, dummy;
-    extern doublereal store_(real *);
-    static real unorm;
-    extern doublereal arclen_(real *, real *);
-    extern /* Subroutine */ int snhcsh_(real *, real *, real *, real *);
+    static doublereal ssm, dsig, ftol, rtol, coshm, sinhm, dummy;
+    extern doublereal store_(doublereal *);
+    static doublereal unorm;
+    extern doublereal arclen_(doublereal *, doublereal *);
+    extern /* Subroutine */ int snhcsh_(doublereal *, doublereal *, doublereal *, doublereal *);
 
     /* Fortran I/O blocks */
     static cilist io___434 = { 0, 0, 0, fmt_100, 0 };
@@ -4949,7 +4953,7 @@ L4:
     un[1] = p1[2] * p2[0] - p1[0] * p2[2];
     un[2] = p1[0] * p2[1] - p1[1] * p2[0];
     unorm = sqrt(un[0] * un[0] + un[1] * un[1] + un[2] * un[2]);
-    if (unorm == (float)0. || al == (float)0.) {
+    if (unorm == (double)0. || al == (double)0.) {
 	goto L11;
     }
 
@@ -4964,28 +4968,28 @@ L4:
     d1d2 = d1 * d2;
     *ier = 1;
     sig = sbig;
-    if (d1d2 == (float)0. && d1 != d2) {
+    if (d1d2 == (double)0. && d1 != d2) {
 	goto L10;
     }
 
 /* Test for a valid constraint. */
 
     *ier = 2;
-    sig = (float)0.;
-    if (d1d2 < (float)0.) {
+    sig = (double)0.;
+    if (d1d2 < (double)0.) {
 	goto L10;
     }
 
 /* Test for SIG = 0 sufficient. */
 
     *ier = 0;
-    if (d1d2 == (float)0.) {
+    if (d1d2 == (double)0.) {
 	goto L10;
     }
 /* Computing MAX */
     r__1 = d1 / d2, r__2 = d2 / d1;
     t = dmax(r__1,r__2);
-    if (t <= (float)2.) {
+    if (t <= (double)2.) {
 	goto L10;
     }
 
@@ -4994,43 +4998,43 @@ L4:
 /*   quadratic approximation is used to obtain an initial */
 /*   estimate for the Newton method. */
 
-    tp1 = t + (float)1.;
-    sig = sqrt(t * (float)10. - (float)20.);
+    tp1 = t + (double)1.;
+    sig = sqrt(t * (double)10. - (double)20.);
     nit = 0;
 
 /*   Compute an absolute tolerance FTOL = abs(TOL) and a */
 /*     relative tolerance RTOL = 100*Macheps. */
 
     ftol = dabs(*tol);
-    rtol = (float)1.;
+    rtol = (double)1.;
 L5:
-    rtol /= (float)2.;
-    r__1 = rtol + (float)1.;
-    if (store_(&r__1) > (float)1.) {
+    rtol /= (double)2.;
+    r__1 = rtol + (double)1.;
+    if (store_(&r__1) > (double)1.) {
 	goto L5;
     }
-    rtol *= (float)200.;
+    rtol *= (double)200.;
 
 /* Top of loop:  evaluate F and its derivative FP. */
 
 L6:
-    if (sig <= (float).5) {
+    if (sig <= (double).5) {
 
 /*   Use approximations designed to avoid cancellation error */
 /*     in the hyperbolic functions. */
 
 	snhcsh_(&sig, &sinhm, &coshm, &dummy);
 	t1 = coshm / sinhm;
-	fp = t1 + sig * (sig / sinhm - t1 * t1 + (float)1.);
+	fp = t1 + sig * (sig / sinhm - t1 * t1 + (double)1.);
     } else {
 
 /*   Scale SINHM and COSHM by 2*exp(-SIG) in order to avoid */
 /*     overflow. */
 
 	ems = exp(-sig);
-	ssm = (float)1. - ems * (ems + sig + sig);
-	t1 = ((float)1. - ems) * ((float)1. - ems) / ssm;
-	fp = t1 + sig * (sig * (float)2. * ems / ssm - t1 * t1 + (float)1.);
+	ssm = (double)1. - ems * (ems + sig + sig);
+	t1 = ((double)1. - ems) * ((double)1. - ems) / ssm;
+	fp = t1 + sig * (sig * (double)2. * ems / ssm - t1 * t1 + (double)1.);
     }
 
     f = sig * t1 - tp1;
@@ -5042,19 +5046,19 @@ L6:
 	io___461.ciunit = lun;
 	s_wsfe(&io___461);
 	do_fio(&c__1, (char *)&nit, (ftnlen)sizeof(integer));
-	do_fio(&c__1, (char *)&sig, (ftnlen)sizeof(real));
-	do_fio(&c__1, (char *)&f, (ftnlen)sizeof(real));
-	do_fio(&c__1, (char *)&fp, (ftnlen)sizeof(real));
+	do_fio(&c__1, (char *)&sig, (ftnlen)sizeof(doublereal));
+	do_fio(&c__1, (char *)&f, (ftnlen)sizeof(doublereal));
+	do_fio(&c__1, (char *)&fp, (ftnlen)sizeof(doublereal));
 	e_wsfe();
     }
 
 /*   Test for convergence. */
 
-    if (fp <= (float)0.) {
+    if (fp <= (double)0.) {
 	goto L10;
     }
     dsig = -f / fp;
-    if (dabs(dsig) <= rtol * sig || f >= (float)0. && f <= ftol || dabs(f) <= 
+    if (dabs(dsig) <= rtol * sig || f >= (double)0. && f <= ftol || dabs(f) <= 
 	    rtol) {
 	goto L10;
     }
@@ -5078,39 +5082,39 @@ L10:
 /* Error termination. */
 
 L11:
-    ret_val = (float)-1.;
+    ret_val = (double)-1.;
     return ret_val;
 } /* sig2_ */
 
-/* Subroutine */ int smsgs_(integer *n, real *x, real *y, real *z__, real *u, 
-	integer *list, integer *lptr, integer *lend, integer *iflgs, real *
-	sigma, real *w, real *p, integer *nit, real *dfmax, real *f, real *
+/* Subroutine */ int smsgs_(integer *n, doublereal *x, doublereal *y, doublereal *z__, doublereal *u, 
+	integer *list, integer *lptr, integer *lend, integer *iflgs, doublereal *
+	sigma, doublereal *w, doublereal *p, integer *nit, doublereal *dfmax, doublereal *f, doublereal *
 	grad, integer *ier)
 {
     /* System generated locals */
     integer i__1, i__2;
-    real r__1, r__2;
+    doublereal r__1, r__2;
 
     /* Builtin functions */
     double sqrt(doublereal), atan(doublereal);
 
     /* Local variables */
     static integer j, k;
-    static real t, g1, g2, g3, r1, r2, r3, t1, t2, t3, t4, t5, t6, c11, c12, 
+    static doublereal t, g1, g2, g3, r1, r2, r3, t1, t2, t3, t4, t5, t6, c11, c12, 
 	    c13, c22, c23, c33, df, fk, cx;
     static integer nn;
-    static real cy, pp, xj, xk, yj, yk, zj, zk, sx, sy, xs, ys, rr2, rr3, 
+    static doublereal cy, pp, xj, xk, yj, yk, zj, zk, sx, sy, xs, ys, rr2, rr3, 
 	    cc22, cc23, cc33, dgk[3];
     static integer ifl;
-    static real gjk, det, gkj, dgx, dgy, sig;
+    static doublereal gjk, det, gkj, dgx, dgy, sig;
     static integer lpj, lpl;
-    static real tol, den1, den2, alfa, dfmx;
+    static doublereal tol, den1, den2, alfa, dfmx;
     static integer iter;
-    static real alfsq, sinal;
+    static doublereal alfsq, sinal;
     static integer itmax;
-    extern /* Subroutine */ int grcoef_(real *, real *, real *), constr_(real 
-	    *, real *, real *, real *, real *, real *, real *), aplyrt_(real *
-	    , real *, real *, real *, real *, real *, real *);
+    extern /* Subroutine */ int grcoef_(doublereal *, doublereal *, doublereal *), constr_(doublereal 
+	    *, doublereal *, doublereal *, doublereal *, doublereal *, doublereal *, doublereal *), aplyrt_(doublereal *
+	    , doublereal *, doublereal *, doublereal *, doublereal *, doublereal *, doublereal *);
 
 
 /* *********************************************************** */
@@ -5219,12 +5223,12 @@ L11:
 /* Test for errors in input and initialize iteration count, */
 /*   tension factor, and output value of DFMAX. */
 
-    if (nn < 3 || pp <= (float)0. || itmax < 0 || tol < (float)0.) {
+    if (nn < 3 || pp <= (double)0. || itmax < 0 || tol < (double)0.) {
 	goto L5;
     }
     iter = 0;
     sig = sigma[1];
-    dfmx = (float)0.;
+    dfmx = (double)0.;
 
 /* Top of iteration loop. */
 
@@ -5232,7 +5236,7 @@ L1:
     if (iter == itmax) {
 	goto L4;
     }
-    dfmx = (float)0.;
+    dfmx = (double)0.;
 
 /*   Loop on nodes. */
 
@@ -5254,14 +5258,14 @@ L1:
 /*     change (DF,DGX,DGY) in the K-th solution components. */
 
 	c11 = pp * w[k];
-	c12 = (float)0.;
-	c13 = (float)0.;
-	c22 = (float)0.;
-	c23 = (float)0.;
-	c33 = (float)0.;
+	c12 = (double)0.;
+	c13 = (double)0.;
+	c22 = (double)0.;
+	c23 = (double)0.;
+	c33 = (double)0.;
 	r1 = c11 * (u[k] - fk);
-	r2 = (float)0.;
-	r3 = (float)0.;
+	r2 = (double)0.;
+	r3 = (double)0.;
 
 /*   Loop on neighbors J of node K. */
 
@@ -5282,7 +5286,7 @@ L2:
 /*     ALFA, SINAL = SIN(ALFA), DEN1 = ALFA*SIN(ALFA)**2, and */
 /*     DEN2 = ALFSQ*SINAL. */
 
-	alfa = atan(sqrt(((float)1. - zj) / (zj + (float)1.))) * (float)2.;
+	alfa = atan(sqrt(((double)1. - zj) / (zj + (double)1.))) * (double)2.;
 	alfsq = alfa * alfa;
 	xs = xj * xj;
 	ys = yj * yj;
@@ -5294,7 +5298,7 @@ L2:
 /*     T1 = SIG*SIG*COSHM/E, T2 = SIG*SINHM/E, and T3 = SIG* */
 /*     (SIG*COSHM-SINHM)/E for E = SIG*SINH - 2*COSHM. */
 
-	if (den1 == (float)0.) {
+	if (den1 == (double)0.) {
 	    goto L7;
 	}
 	if (ifl >= 1) {
@@ -5305,7 +5309,7 @@ L2:
 
 /*   Update system components for node J. */
 
-	t4 = t1 * (float)2. / (alfa * alfsq);
+	t4 = t1 * (double)2. / (alfa * alfsq);
 	t5 = t1 / den2;
 	t6 = t3 / den1;
 	c11 += t4;
@@ -5336,7 +5340,7 @@ L2:
 	rr2 = c11 * r2 - c12 * r1;
 	rr3 = c11 * r3 - c13 * r1;
 	det = cc22 * cc33 - cc23 * cc23;
-	if (det == (float)0. || cc22 == (float)0. || c11 == (float)0.) {
+	if (det == (double)0. || cc22 == (double)0. || c11 == (double)0.) {
 	    goto L6;
 	}
 	dgy = (cc22 * rr3 - cc23 * rr2) / det;
@@ -5352,7 +5356,7 @@ L2:
 	grad[k * 3 + 3] = g3 + dgk[2];
 	f[k] = fk + df;
 /* Computing MAX */
-	r__1 = dfmx, r__2 = dabs(df) / (dabs(fk) + (float)1.);
+	r__1 = dfmx, r__2 = dabs(df) / (dabs(fk) + (double)1.);
 	dfmx = dmax(r__1,r__2);
 /* L3: */
     }
@@ -5382,7 +5386,7 @@ L4:
 
 L5:
     *nit = 0;
-    *dfmax = (float)0.;
+    *dfmax = (double)0.;
     *ier = -1;
     return 0;
 
@@ -5403,10 +5407,10 @@ L7:
     return 0;
 } /* smsgs_ */
 
-/* Subroutine */ int smsurf_(integer *n, real *x, real *y, real *z__, real *u,
-	 integer *list, integer *lptr, integer *lend, integer *iflgs, real *
-	sigma, real *w, real *sm, real *smtol, real *gstol, integer *lprnt, 
-	real *f, real *grad, integer *ier)
+/* Subroutine */ int smsurf_(integer *n, doublereal *x, doublereal *y, doublereal *z__, doublereal *u,
+	 integer *list, integer *lptr, integer *lend, integer *iflgs, doublereal *
+	sigma, doublereal *w, doublereal *sm, doublereal *smtol, doublereal *gstol, integer *lprnt, 
+	doublereal *f, doublereal *grad, integer *ier)
 {
     /* Initialized data */
 
@@ -5424,7 +5428,7 @@ L = \002,e7.1,\002, NITMAX = \002,i2,\002, G(0) = \002,e15.8)";
 
     /* System generated locals */
     integer i__1;
-    real r__1;
+    doublereal r__1;
 
     /* Builtin functions */
     integer s_wsfe(cilist *), e_wsfe();
@@ -5432,18 +5436,18 @@ L = \002,e7.1,\002, NITMAX = \002,i2,\002, G(0) = \002,e15.8)";
     integer do_fio(integer *, char *, ftnlen);
 
     /* Local variables */
-    static real c__, g;
+    static doublereal c__, g;
     static integer i__;
-    static real p, s, g0, q2, dp;
+    static doublereal p, s, g0, q2, dp;
     static integer nn;
-    static real wi;
+    static doublereal wi;
     static integer nit, lun;
-    static real tol, gneg, dmax__;
+    static doublereal tol, gneg, dmax__;
     static integer ierr, iter;
-    static real sumw, q2min, q2max, dfmax;
-    extern /* Subroutine */ int smsgs_(integer *, real *, real *, real *, 
-	    real *, integer *, integer *, integer *, integer *, real *, real *
-	    , real *, integer *, real *, real *, real *, integer *);
+    static doublereal sumw, q2min, q2max, dfmax;
+    extern /* Subroutine */ int smsgs_(integer *, doublereal *, doublereal *, doublereal *, 
+	    doublereal *, integer *, integer *, integer *, integer *, doublereal *, doublereal *
+	    , doublereal *, integer *, doublereal *, doublereal *, doublereal *, integer *);
 
     /* Fortran I/O blocks */
     static cilist io___536 = { 0, 0, 0, fmt_100, 0 };
@@ -5640,16 +5644,16 @@ L = \002,e7.1,\002, NITMAX = \002,i2,\002, G(0) = \002,e15.8)";
 /*   squares fit of a constant function to the data. */
 
     *ier = -1;
-    if (nn < 3 || *sm <= (float)0. || *smtol <= (float)0. || *smtol >= (float)
-	    1. || tol <= (float)0.) {
+    if (nn < 3 || *sm <= (double)0. || *smtol <= (double)0. || *smtol >= (double)
+	    1. || tol <= (double)0.) {
 	return 0;
     }
-    c__ = (float)0.;
-    sumw = (float)0.;
+    c__ = (double)0.;
+    sumw = (double)0.;
     i__1 = nn;
     for (i__ = 1; i__ <= i__1; ++i__) {
 	wi = w[i__];
-	if (wi <= (float)0.) {
+	if (wi <= (double)0.) {
 	    return 0;
 	}
 	c__ += wi * u[i__];
@@ -5661,13 +5665,13 @@ L = \002,e7.1,\002, NITMAX = \002,i2,\002, G(0) = \002,e15.8)";
 /* Compute nodal values and gradients, and accumulate Q2 = */
 /*   (U-F)**T*W*(U-F). */
 
-    q2 = (float)0.;
+    q2 = (double)0.;
     i__1 = nn;
     for (i__ = 1; i__ <= i__1; ++i__) {
 	f[i__] = c__;
-	grad[i__ * 3 + 1] = (float)0.;
-	grad[i__ * 3 + 2] = (float)0.;
-	grad[i__ * 3 + 3] = (float)0.;
+	grad[i__ * 3 + 1] = (double)0.;
+	grad[i__ * 3 + 2] = (double)0.;
+	grad[i__ * 3 + 3] = (double)0.;
 /* Computing 2nd power */
 	r__1 = u[i__] - f[i__];
 	q2 += w[i__] * (r__1 * r__1);
@@ -5677,8 +5681,8 @@ L = \002,e7.1,\002, NITMAX = \002,i2,\002, G(0) = \002,e15.8)";
 /* Compute bounds on Q2 defined by SMTOL, and test for the */
 /*   constraint satisfied by the constant fit. */
 
-    q2min = *sm * ((float)1. - *smtol);
-    q2max = *sm * (*smtol + (float)1.);
+    q2min = *sm * ((double)1. - *smtol);
+    q2max = *sm * (*smtol + (double)1.);
     if (q2 <= q2max) {
 
 /* The constraint is satisfied by a constant function. */
@@ -5695,15 +5699,15 @@ L = \002,e7.1,\002, NITMAX = \002,i2,\002, G(0) = \002,e15.8)";
 /* Compute G0 = G(0) and print a heading. */
 
     *ier = 0;
-    s = (float)1. / sqrt(*sm);
-    g0 = (float)1. / sqrt(q2) - s;
+    s = (double)1. / sqrt(*sm);
+    g0 = (double)1. / sqrt(q2) - s;
     if (lun >= 0) {
 	io___539.ciunit = lun;
 	s_wsfe(&io___539);
-	do_fio(&c__1, (char *)&(*sm), (ftnlen)sizeof(real));
-	do_fio(&c__1, (char *)&tol, (ftnlen)sizeof(real));
+	do_fio(&c__1, (char *)&(*sm), (ftnlen)sizeof(doublereal));
+	do_fio(&c__1, (char *)&tol, (ftnlen)sizeof(doublereal));
 	do_fio(&c__1, (char *)&nitmax, (ftnlen)sizeof(integer));
-	do_fio(&c__1, (char *)&g0, (ftnlen)sizeof(real));
+	do_fio(&c__1, (char *)&g0, (ftnlen)sizeof(doublereal));
 	e_wsfe();
     }
 
@@ -5713,9 +5717,9 @@ L = \002,e7.1,\002, NITMAX = \002,i2,\002, G(0) = \002,e15.8)";
 /*   where P0 and PNEG are defined implicitly by DP = P - P0 */
 /*   and DMAX = P - PNEG. */
 
-    p = *sm * (float)10.;
+    p = *sm * (double)10.;
     dp = p;
-    dmax__ = (float)0.;
+    dmax__ = (double)0.;
     iter = 0;
 
 /* Top of loop -- compute G. */
@@ -5739,7 +5743,7 @@ L3:
     if (ierr < 0) {
 	return 0;
     }
-    q2 = (float)0.;
+    q2 = (double)0.;
     i__1 = nn;
     for (i__ = 1; i__ <= i__1; ++i__) {
 /* Computing 2nd power */
@@ -5747,16 +5751,16 @@ L3:
 	q2 += w[i__] * (r__1 * r__1);
 /* L4: */
     }
-    g = (float)1. / sqrt(q2) - s;
+    g = (double)1. / sqrt(q2) - s;
     ++iter;
     if (lun >= 0) {
 	io___548.ciunit = lun;
 	s_wsfe(&io___548);
 	do_fio(&c__1, (char *)&iter, (ftnlen)sizeof(integer));
-	do_fio(&c__1, (char *)&p, (ftnlen)sizeof(real));
-	do_fio(&c__1, (char *)&g, (ftnlen)sizeof(real));
+	do_fio(&c__1, (char *)&p, (ftnlen)sizeof(doublereal));
+	do_fio(&c__1, (char *)&g, (ftnlen)sizeof(doublereal));
 	do_fio(&c__1, (char *)&nit, (ftnlen)sizeof(integer));
-	do_fio(&c__1, (char *)&dfmax, (ftnlen)sizeof(real));
+	do_fio(&c__1, (char *)&dfmax, (ftnlen)sizeof(doublereal));
 	e_wsfe();
     }
 
@@ -5769,18 +5773,18 @@ L3:
 	*ier = 2;
 	return 0;
     }
-    if (dmax__ == (float)0. && g <= (float)0.) {
+    if (dmax__ == (double)0. && g <= (double)0.) {
 
 /*   Increase P until G(P) > 0. */
 
-	p *= (float)10.;
+	p *= (double)10.;
 	dp = p;
 	goto L3;
     }
 
 /*   A bracketing interval [P0,P] has been found. */
 
-    if (g0 * g <= (float)0.) {
+    if (g0 * g <= (double)0.) {
 
 /*   G0*G < 0.  Update (PNEG,GNEG) to (P0,G0) so that G */
 /*     and GNEG always have opposite signs. */
@@ -5797,7 +5801,7 @@ L5:
     if (lun >= 0) {
 	io___550.ciunit = lun;
 	s_wsfe(&io___550);
-	do_fio(&c__1, (char *)&dp, (ftnlen)sizeof(real));
+	do_fio(&c__1, (char *)&dp, (ftnlen)sizeof(doublereal));
 	e_wsfe();
     }
     if (dabs(dp) > dabs(dmax__)) {
@@ -5819,20 +5823,20 @@ L5:
     goto L3;
 } /* smsurf_ */
 
-/* Subroutine */ int snhcsh_(real *x, real *sinhm, real *coshm, real *coshmm)
+/* Subroutine */ int snhcsh_(doublereal *x, doublereal *sinhm, doublereal *coshm, doublereal *coshmm)
 {
     /* Initialized data */
 
-    static real c1 = (float).1666666666659;
-    static real c2 = (float).008333333431546;
-    static real c3 = (float)1.984107350948e-4;
-    static real c4 = (float)2.768286868175e-6;
+    static doublereal c1 = (double).1666666666659;
+    static doublereal c2 = (double).008333333431546;
+    static doublereal c3 = (double)1.984107350948e-4;
+    static doublereal c4 = (double)2.768286868175e-6;
 
     /* Builtin functions */
     double exp(doublereal);
 
     /* Local variables */
-    static real f, ax, xc, xs, xsd2, xsd4, expx;
+    static doublereal f, ax, xc, xs, xsd2, xsd4, expx;
 
 
 /* *********************************************************** */
@@ -5846,7 +5850,7 @@ L5:
 
 /*   This subroutine computes approximations to the modified */
 /* hyperbolic functions defined below with relative error */
-/* bounded by 4.7E-12 for a floating point number system with */
+/* bounded by 4.7E-12 for a doubleing point number system with */
 /* sufficient precision.  For IEEE standard single precision, */
 /* the relative error is less than 1.E-5 for all x. */
 
@@ -5877,36 +5881,36 @@ L5:
 
     ax = dabs(*x);
     xs = ax * ax;
-    if (ax <= (float).5) {
+    if (ax <= (double).5) {
 
 /* Approximations for small X: */
 
 	xc = *x * xs;
 	*sinhm = xc * (((c4 * xs + c3) * xs + c2) * xs + c1);
-	xsd4 = xs * (float).25;
+	xsd4 = xs * (double).25;
 	xsd2 = xsd4 + xsd4;
 	f = (((c4 * xsd4 + c3) * xsd4 + c2) * xsd4 + c1) * xsd4;
-	*coshmm = xsd2 * f * (f + (float)2.);
+	*coshmm = xsd2 * f * (f + (double)2.);
 	*coshm = *coshmm + xsd2;
     } else {
 
 /* Approximations for large X: */
 
 	expx = exp(ax);
-	*sinhm = -((float)1. / expx + ax + ax - expx) / (float)2.;
-	if (*x < (float)0.) {
+	*sinhm = -((double)1. / expx + ax + ax - expx) / (double)2.;
+	if (*x < (double)0.) {
 	    *sinhm = -(*sinhm);
 	}
-	*coshm = ((float)1. / expx - (float)2. + expx) / (float)2.;
-	*coshmm = *coshm - xs / (float)2.;
+	*coshm = ((double)1. / expx - (double)2. + expx) / (double)2.;
+	*coshmm = *coshm - xs / (double)2.;
     }
     return 0;
 } /* snhcsh_ */
 
-/* Subroutine */ int unif_(integer *n, real *x, real *y, real *z__, real *f, 
-	integer *list, integer *lptr, integer *lend, integer *iflgs, real *
-	sigma, integer *nrow, integer *ni, integer *nj, real *plat, real *
-	plon, integer *iflgg, real *grad, real *ff, integer *ier)
+/* Subroutine */ int unif_(integer *n, doublereal *x, doublereal *y, doublereal *z__, doublereal *f, 
+	integer *list, integer *lptr, integer *lend, integer *iflgs, doublereal *
+	sigma, integer *nrow, integer *ni, integer *nj, doublereal *plat, doublereal *
+	plon, integer *iflgg, doublereal *grad, doublereal *ff, integer *ier)
 {
     /* Initialized data */
 
@@ -5917,11 +5921,11 @@ L5:
 
     /* Local variables */
     static integer i__, j, nn, nx, ny, ifl, nex, ist, ierr;
-    extern /* Subroutine */ int gradl_(integer *, integer *, real *, real *, 
-	    real *, real *, integer *, integer *, integer *, real *, integer *
-	    ), intrc1_(integer *, real *, real *, real *, real *, real *, 
-	    real *, integer *, integer *, integer *, integer *, real *, 
-	    integer *, real *, integer *, real *, integer *);
+    extern /* Subroutine */ int gradl_(integer *, integer *, doublereal *, doublereal *, 
+	    doublereal *, doublereal *, integer *, integer *, integer *, doublereal *, integer *
+	    ), intrc1_(integer *, doublereal *, doublereal *, doublereal *, doublereal *, doublereal *, 
+	    doublereal *, integer *, integer *, integer *, integer *, doublereal *, 
+	    integer *, doublereal *, integer *, doublereal *, integer *);
 
 
 /* *********************************************************** */

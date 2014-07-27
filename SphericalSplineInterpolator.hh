@@ -24,29 +24,29 @@ extern "C" {
 #endif
 
 #include <f2c.h>
-int intrc0_(integer *n, real *plat, real *plon, real *x, 
-    real *y, real *z__, real *w, integer *list, integer *lptr, integer *
-    lend, integer *ist, real *pw, integer *ier);
+int intrc0_(integer *n, doublereal *plat, doublereal *plon, doublereal *x, 
+    doublereal *y, doublereal *z__, doublereal *w, integer *list, integer *lptr, integer *
+    lend, integer *ist, doublereal *pw, integer *ier);
 
-int intrc1_(integer *n, real *plat, real *plon, real *x, 
-    real *y, real *z__, real *f, integer *list, integer *lptr, integer *
-    lend, integer *iflgs, real *sigma, integer *iflgg, real *grad, 
-    integer *ist, real *fp, integer *ier);
+int intrc1_(integer *n, doublereal *plat, doublereal *plon, doublereal *x, 
+    doublereal *y, doublereal *z__, doublereal *f, integer *list, integer *lptr, integer *
+    lend, integer *iflgs, doublereal *sigma, integer *iflgg, doublereal *grad, 
+    integer *ist, doublereal *fp, integer *ier);
 
-int trmesh_(integer *n, real *x, real *y, real *z__, integer 
+int trmesh_(integer *n, doublereal *x, doublereal *y, doublereal *z__, integer 
     *list, integer *lptr, integer *lend, integer *lnew, integer *near__, 
-    integer *next, real *dist, integer *ier);
+    integer *next, doublereal *dist, integer *ier);
 
-int trans_(integer *n, real *rlat, real *rlon, real *x, real 
-    *y, real *z__);
+int trans_(integer *n, doublereal *rlat, doublereal *rlon, doublereal *x, doublereal 
+    *y, doublereal *z__);
 
-int gradg_(integer *n, real *x, real *y, real *z__, real *f, 
-    integer *list, integer *lptr, integer *lend, integer *iflgs, real *
-    sigma, integer *nit, real *dgmax, real *grad, integer *ier);
+int gradg_(integer *n, doublereal *x, doublereal *y, doublereal *z__, doublereal *f, 
+    integer *list, integer *lptr, integer *lend, integer *iflgs, doublereal *
+    sigma, integer *nit, doublereal *dgmax, doublereal *grad, integer *ier);
 
-int getsig_(integer *n, real *x, real *y, real *z__, real *
-    h__, integer *list, integer *lptr, integer *lend, real *grad, real *
-    tol, real *sigma, real *dsmax, integer *ier);
+int getsig_(integer *n, doublereal *x, doublereal *y, doublereal *z__, doublereal *
+    h__, integer *list, integer *lptr, integer *lend, doublereal *grad, doublereal *
+    tol, doublereal *sigma, doublereal *dsmax, integer *ier);
 #ifdef __cplusplus
 }
 #endif
@@ -60,20 +60,21 @@ class SphericalSplineInterpolator
 {
     public:
     
-    SphericalSplineInterpolator(float *lons, float *lats, float *vals, int n);
+    SphericalSplineInterpolator(double *lons, double *lats, double *vals, int n);
     
-    void InterpolateC0(int n, float *queryLons, float *queryLats, float *results);
+    void InterpolateC0(int n, double *queryLons, double *queryLats, double *results);
+    void InterpolateC1(int n, double *queryLons, double *queryLats, double *results);
     
     ~SphericalSplineInterpolator();
 
     private:
     int m_numNodes;
-    vector<float> m_lons;
-    vector<float> m_lats;
-    vector<float> m_vals;
-    vector<float> m_xs;
-    vector<float> m_ys;
-    vector<float> m_zs;
+    vector<double> m_lons;
+    vector<double> m_lats;
+    vector<double> m_vals;
+    vector<double> m_xs;
+    vector<double> m_ys;
+    vector<double> m_zs;
 
     /*-----------------------------------------------------------------------------
      * Triangulation-related arrays 
@@ -83,7 +84,7 @@ class SphericalSplineInterpolator
     vector<int> m_lend;
     vector<int> m_near;
     vector<int> m_next;
-    vector<float> m_dist;
+    vector<double> m_dist;
 };
 
 #endif

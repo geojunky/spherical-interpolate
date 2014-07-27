@@ -18,7 +18,7 @@ extern "C" {
 /* Common Block Declarations */
 
 struct {
-    real y;
+    doublereal y;
 } stcom_;
 
 #define stcom_1 stcom_
@@ -27,7 +27,7 @@ struct {
 
 static integer c__1 = 1;
 
-/* Subroutine */ int addnod_(integer *nst, integer *k, real *x, real *y, real 
+/* Subroutine */ int addnod_(integer *nst, integer *k, doublereal *x, doublereal *y, doublereal 
 	*z__, integer *list, integer *lptr, integer *lend, integer *lnew, 
 	integer *ier)
 {
@@ -36,7 +36,7 @@ static integer c__1 = 1;
 
     /* Local variables */
     static integer l;
-    static real p[3], b1, b2, b3;
+    static doublereal p[3], b1, b2, b3;
     static integer i1, i2, i3, kk, lp, in1, io1, io2, km1, lpf, ist, lpo1;
     extern /* Subroutine */ int swap_(integer *, integer *, integer *, 
 	    integer *, integer *, integer *, integer *, integer *);
@@ -44,13 +44,13 @@ static integer c__1 = 1;
     extern /* Subroutine */ int bdyadd_(integer *, integer *, integer *, 
 	    integer *, integer *, integer *, integer *), intadd_(integer *, 
 	    integer *, integer *, integer *, integer *, integer *, integer *, 
-	    integer *), trfind_(integer *, real *, integer *, real *, real *, 
-	    real *, integer *, integer *, integer *, real *, real *, real *, 
+	    integer *), trfind_(integer *, doublereal *, integer *, doublereal *, doublereal *, 
+	    doublereal *, integer *, integer *, integer *, doublereal *, doublereal *, doublereal *, 
 	    integer *, integer *, integer *), covsph_(integer *, integer *, 
 	    integer *, integer *, integer *, integer *);
     extern integer lstptr_(integer *, integer *, integer *, integer *);
-    extern logical swptst_(integer *, integer *, integer *, integer *, real *,
-	     real *, real *);
+    extern logical swptst_(integer *, integer *, integer *, integer *, doublereal *,
+	     doublereal *, doublereal *);
 
 
 /* *********************************************************** */
@@ -279,10 +279,10 @@ L5:
     return 0;
 } /* addnod_ */
 
-doublereal areas_(real *v1, real *v2, real *v3)
+doublereal areas_(doublereal *v1, doublereal *v2, doublereal *v3)
 {
     /* System generated locals */
-    real ret_val;
+    doublereal ret_val;
 
     /* Builtin functions */
     double sqrt(doublereal), acos(doublereal);
@@ -385,7 +385,7 @@ doublereal areas_(real *v1, real *v2, real *v3)
 /*   vertices. */
 
     if (s12 == 0. || s23 == 0. || s31 == 0.) {
-	ret_val = (float)0.;
+	ret_val = (double)0.;
 	return ret_val;
     }
     s12 = sqrt(s12);
@@ -431,9 +431,9 @@ doublereal areas_(real *v1, real *v2, real *v3)
 
 /* Compute AREAS = A1 + A2 + A3 - PI. */
 
-    ret_val = (real) (a1 + a2 + a3 - acos(-1.));
-    if (ret_val < (float)0.) {
-	ret_val = (float)0.;
+    ret_val = (doublereal) (a1 + a2 + a3 - acos(-1.));
+    if (ret_val < (double)0.) {
+	ret_val = (double)0.;
     }
     return ret_val;
 } /* areas_ */
@@ -696,7 +696,7 @@ L4:
     return 0;
 } /* bnodes_ */
 
-/* Subroutine */ int circum_(real *v1, real *v2, real *v3, real *c__, integer 
+/* Subroutine */ int circum_(doublereal *v1, doublereal *v2, doublereal *v3, doublereal *c__, integer 
 	*ier)
 {
     /* Builtin functions */
@@ -704,7 +704,7 @@ L4:
 
     /* Local variables */
     static integer i__;
-    static real e1[3], e2[3], cu[3], cnorm;
+    static doublereal e1[3], e2[3], cu[3], cnorm;
 
 
 /* *********************************************************** */
@@ -783,7 +783,7 @@ L4:
 /* The vertices lie on a common line if and only if CU is */
 /*   the zero vector. */
 
-    if (cnorm != (float)0.) {
+    if (cnorm != (double)0.) {
 
 /*   No error:  compute C. */
 
@@ -906,10 +906,10 @@ L2:
     return 0;
 } /* covsph_ */
 
-/* Subroutine */ int crlist_(integer *n, integer *ncol, real *x, real *y, 
-	real *z__, integer *list, integer *lend, integer *lptr, integer *lnew,
-	 integer *ltri, integer *listc, integer *nb, real *xc, real *yc, real 
-	*zc, real *rc, integer *ier)
+/* Subroutine */ int crlist_(integer *n, integer *ncol, doublereal *x, doublereal *y, 
+	doublereal *z__, integer *list, integer *lend, integer *lptr, integer *lnew,
+	 integer *ltri, integer *listc, integer *nb, doublereal *xc, doublereal *yc, doublereal 
+	*zc, doublereal *rc, integer *ier)
 {
     /* System generated locals */
     integer i__1, i__2;
@@ -918,18 +918,18 @@ L2:
     double acos(doublereal);
 
     /* Local variables */
-    static real c__[3], t;
+    static doublereal c__[3], t;
     static integer i1, i2, i3, i4, n0, n1, n2, n3, n4;
-    static real v1[3], v2[3], v3[3];
+    static doublereal v1[3], v2[3], v3[3];
     static integer lp, kt, nn, nt, nm2, kt1, kt2, kt11, kt12, kt21, kt22, lpl,
 	     lpn;
     static logical swp;
     static integer ierr;
-    extern /* Subroutine */ int circum_(real *, real *, real *, real *, 
+    extern /* Subroutine */ int circum_(doublereal *, doublereal *, doublereal *, doublereal *, 
 	    integer *);
     extern integer lstptr_(integer *, integer *, integer *, integer *);
-    extern logical swptst_(integer *, integer *, integer *, integer *, real *,
-	     real *, real *);
+    extern logical swptst_(integer *, integer *, integer *, integer *, doublereal *,
+	     doublereal *, doublereal *);
 
 
 /* *********************************************************** */
@@ -1330,11 +1330,11 @@ L7:
 	yc[kt] = c__[1];
 	zc[kt] = c__[2];
 	t = v1[0] * c__[0] + v1[1] * c__[1] + v1[2] * c__[2];
-	if (t < (float)-1.) {
-	    t = (float)-1.;
+	if (t < (double)-1.) {
+	    t = (double)-1.;
 	}
-	if (t > (float)1.) {
-	    t = (float)1.;
+	if (t > (double)1.) {
+	    t = (double)1.;
 	}
 	rc[kt] = acos(t);
 /* L8: */
@@ -1391,11 +1391,11 @@ L10:
 	yc[kt] = c__[1];
 	zc[kt] = c__[2];
 	t = v1[0] * c__[0] + v1[1] * c__[1] + v1[2] * c__[2];
-	if (t < (float)-1.) {
-	    t = (float)-1.;
+	if (t < (double)-1.) {
+	    t = (double)-1.;
 	}
-	if (t > (float)1.) {
-	    t = (float)1.;
+	if (t > (double)1.) {
+	    t = (double)1.;
 	}
 	rc[kt] = acos(t);
 
@@ -1863,7 +1863,7 @@ L5:
     return 0;
 } /* delnb_ */
 
-/* Subroutine */ int delnod_(integer *k, integer *n, real *x, real *y, real *
+/* Subroutine */ int delnod_(integer *k, integer *n, doublereal *x, doublereal *y, doublereal *
 	z__, integer *list, integer *lptr, integer *lend, integer *lnew, 
 	integer *lwk, integer *iwk, integer *ier)
 {
@@ -1879,12 +1879,12 @@ L5:
 
     /* Local variables */
     static integer i__, j, n1, n2;
-    static real x1, x2, y1, y2, z1, z2;
+    static doublereal x1, x2, y1, y2, z1, z2;
     static integer nl, lp, nn, nr;
-    static real xl, yl, zl, xr, yr, zr;
+    static doublereal xl, yl, zl, xr, yr, zr;
     static integer nnb, lp21, lpf, lph, lpl, lpn, iwl, nit, lnw, lpl2;
-    extern logical left_(real *, real *, real *, real *, real *, real *, real 
-	    *, real *, real *);
+    extern logical left_(doublereal *, doublereal *, doublereal *, doublereal *, doublereal *, doublereal *, doublereal 
+	    *, doublereal *, doublereal *);
     static logical bdry;
     static integer ierr, lwkl;
     extern /* Subroutine */ int swap_(integer *, integer *, integer *, 
@@ -1892,7 +1892,7 @@ L5:
 	    integer *, integer *, integer *, integer *, integer *, integer *, 
 	    integer *, integer *);
     extern integer nbcnt_(integer *, integer *);
-    extern /* Subroutine */ int optim_(real *, real *, real *, integer *, 
+    extern /* Subroutine */ int optim_(doublereal *, doublereal *, doublereal *, integer *, 
 	    integer *, integer *, integer *, integer *, integer *, integer *);
     static integer nfrst;
     extern integer lstptr_(integer *, integer *, integer *, integer *);
@@ -2413,7 +2413,7 @@ L26:
     return 0;
 } /* delnod_ */
 
-/* Subroutine */ int edge_(integer *in1, integer *in2, real *x, real *y, real 
+/* Subroutine */ int edge_(integer *in1, integer *in2, doublereal *x, doublereal *y, doublereal 
 	*z__, integer *lwk, integer *iwk, integer *list, integer *lptr, 
 	integer *lend, integer *ier)
 {
@@ -2432,18 +2432,18 @@ E):\002,\002  NIT = \002,i4,\002, IER = \002,i1,\002 ***\002/)";
 
     /* Local variables */
     static integer i__, n0, n1, n2;
-    static real x0, x1, x2, y0, y1, y2, z0, z1, z2;
+    static doublereal x0, x1, x2, y0, y1, y2, z0, z1, z2;
     static integer nl, lp, nr;
-    static real dp12;
+    static doublereal dp12;
     static integer lp21, iwc, iwf, lft, lpl, iwl, nit;
-    static real dp1l, dp2l, dp1r, dp2r;
-    extern logical left_(real *, real *, real *, real *, real *, real *, real 
-	    *, real *, real *);
+    static doublereal dp1l, dp2l, dp1r, dp2r;
+    extern logical left_(doublereal *, doublereal *, doublereal *, doublereal *, doublereal *, doublereal *, doublereal 
+	    *, doublereal *, doublereal *);
     static integer ierr;
     extern /* Subroutine */ int swap_(integer *, integer *, integer *, 
 	    integer *, integer *, integer *, integer *, integer *);
     static integer next, iwcp1, n1lst, iwend;
-    extern /* Subroutine */ int optim_(real *, real *, real *, integer *, 
+    extern /* Subroutine */ int optim_(doublereal *, doublereal *, doublereal *, integer *, 
 	    integer *, integer *, integer *, integer *, integer *, integer *);
     static integer n1frst;
 
@@ -2531,7 +2531,7 @@ E):\002,\002  NIT = \002,i4,\002, IER = \002,i1,\002 ***\002/)";
 /*                     Refer to LWK. */
 /*             IER = 3 if IN1 and IN2 could not be connected */
 /*                     due to either an invalid data struc- */
-/*                     ture or collinear nodes (and floating */
+/*                     ture or collinear nodes (and doubleing */
 /*                     point error). */
 /*             IER = 4 if an error flag other than IER = 1 */
 /*                     was returned by OPTIM. */
@@ -2688,9 +2688,9 @@ L4:
 	dp2l = x2 * x[nl] + y2 * y[nl] + z2 * z__[nl];
 	dp1r = x1 * x[nr] + y1 * y[nr] + z1 * z__[nr];
 	dp2r = x2 * x[nr] + y2 * y[nr] + z2 * z__[nr];
-	if ((dp2l - dp12 * dp1l >= (float)0. || dp2r - dp12 * dp1r >= (float)
-		0.) && (dp1l - dp12 * dp2l >= (float)0. || dp1r - dp12 * dp2r 
-		>= (float)0.)) {
+	if ((dp2l - dp12 * dp1l >= (double)0. || dp2r - dp12 * dp1r >= (double)
+		0.) && (dp1l - dp12 * dp2l >= (double)0. || dp1r - dp12 * dp2r 
+		>= (double)0.)) {
 	    goto L6;
 	}
 
@@ -2711,7 +2711,7 @@ L4:
 
 /* Either the triangulation is invalid or N1-N2 lies on the */
 /*   convex hull boundary and an edge NR->NL (opposite N1 and */
-/*   intersecting N1-N2) was not found due to floating point */
+/*   intersecting N1-N2) was not found due to doubleing point */
 /*   error.  Try interchanging N1 and N2 -- NIT > 0 iff this */
 /*   has already been done. */
 
@@ -3078,8 +3078,8 @@ L35:
     return 0;
 } /* edge_ */
 
-/* Subroutine */ int getnp_(real *x, real *y, real *z__, integer *list, 
-	integer *lptr, integer *lend, integer *l, integer *npts, real *df, 
+/* Subroutine */ int getnp_(doublereal *x, doublereal *y, doublereal *z__, integer *list, 
+	integer *lptr, integer *lend, integer *l, integer *npts, doublereal *df, 
 	integer *ier)
 {
     /* System generated locals */
@@ -3087,9 +3087,9 @@ L35:
 
     /* Local variables */
     static integer i__, n1;
-    static real x1, y1, z1;
+    static doublereal x1, y1, z1;
     static integer nb, ni, lp, np, lm1;
-    static real dnb, dnp;
+    static doublereal dnb, dnp;
     static integer lpl;
 
 
@@ -3202,7 +3202,7 @@ L35:
 /*   of nodes in NPTS.  DNP is initially greater than -cos(PI) */
 /*   (the maximum distance). */
 
-    dnp = (float)2.;
+    dnp = (double)2.;
 
 /* Loop on nodes NI in NPTS. */
 
@@ -3315,12 +3315,12 @@ L6:
     return 0;
 } /* insert_ */
 
-logical inside_(real *p, integer *lv, real *xv, real *yv, real *zv, integer *
+logical inside_(doublereal *p, integer *lv, doublereal *xv, doublereal *yv, doublereal *zv, integer *
 	nv, integer *listv, integer *ier)
 {
     /* Initialized data */
 
-    static real eps = (float).001;
+    static doublereal eps = (double).001;
 
     /* System generated locals */
     integer i__1;
@@ -3330,19 +3330,19 @@ logical inside_(real *p, integer *lv, real *xv, real *yv, real *zv, integer *
     double sqrt(doublereal);
 
     /* Local variables */
-    static real b[3], d__;
+    static doublereal b[3], d__;
     static integer k, n;
-    static real q[3];
+    static doublereal q[3];
     static integer i1, i2, k0;
-    static real v1[3], v2[3], cn[3], bp, bq;
+    static doublereal v1[3], v2[3], cn[3], bp, bq;
     static integer ni;
-    static real pn[3], qn[3], vn[3];
+    static doublereal pn[3], qn[3], vn[3];
     static integer imx;
     static logical lft1, lft2, even;
     static integer ierr;
     static logical pinr, qinr;
-    static real qnrm, vnrm;
-    extern /* Subroutine */ int intrsc_(real *, real *, real *, real *, 
+    static doublereal qnrm, vnrm;
+    extern /* Subroutine */ int intrsc_(doublereal *, doublereal *, doublereal *, doublereal *, 
 	    integer *);
 
 
@@ -3540,7 +3540,7 @@ L1:
     vn[1] = zv[i1] * xv[i2] - xv[i1] * zv[i2];
     vn[2] = xv[i1] * yv[i2] - yv[i1] * xv[i2];
     vnrm = sqrt(vn[0] * vn[0] + vn[1] * vn[1] + vn[2] * vn[2]);
-    if (vnrm == (float)0.) {
+    if (vnrm == (double)0.) {
 	goto L1;
     }
     q[0] = xv[i1] + xv[i2] + eps * vn[0] / vnrm;
@@ -3556,7 +3556,7 @@ L1:
     cn[0] = q[1] * p[3] - q[2] * p[2];
     cn[1] = q[2] * p[1] - q[0] * p[3];
     cn[2] = q[0] * p[2] - q[1] * p[1];
-    if (cn[0] == (float)0. && cn[1] == (float)0. && cn[2] == (float)0.) {
+    if (cn[0] == (double)0. && cn[1] == (double)0. && cn[2] == (double)0.) {
 	goto L1;
     }
     pn[0] = p[2] * cn[2] - p[3] * cn[1];
@@ -3570,15 +3570,15 @@ L1:
 
     ni = 0;
     even = TRUE_;
-    bp = (float)-2.;
-    bq = (float)-2.;
+    bp = (double)-2.;
+    bq = (double)-2.;
     pinr = TRUE_;
     qinr = TRUE_;
     i2 = listv[n];
     if (i2 < 1 || i2 > imx) {
 	goto L12;
     }
-    lft2 = cn[0] * xv[i2] + cn[1] * yv[i2] + cn[2] * zv[i2] > (float)0.;
+    lft2 = cn[0] * xv[i2] + cn[1] * yv[i2] + cn[2] * zv[i2] > (double)0.;
 
 /* Loop on boundary arcs I1->I2. */
 
@@ -3590,7 +3590,7 @@ L1:
 	if (i2 < 1 || i2 > imx) {
 	    goto L12;
 	}
-	lft2 = cn[0] * xv[i2] + cn[1] * yv[i2] + cn[2] * zv[i2] > (float)0.;
+	lft2 = cn[0] * xv[i2] + cn[1] * yv[i2] + cn[2] * zv[i2] > (double)0.;
 	if (lft1 == lft2) {
 	    goto L2;
 	}
@@ -3611,8 +3611,8 @@ L1:
 /*     B Forward Q->P and B Forward P->Q       iff */
 /*     <B,QN> > 0 and <B,PN> > 0. */
 
-	if (b[0] * qn[0] + b[1] * qn[1] + b[2] * qn[2] > (float)0. && b[0] * 
-		pn[0] + b[1] * pn[1] + b[2] * pn[2] > (float)0.) {
+	if (b[0] * qn[0] + b[1] * qn[1] + b[2] * qn[2] > (double)0. && b[0] * 
+		pn[0] + b[1] * pn[1] + b[2] * pn[2] > (double)0.) {
 
 /*   Update EVEN, BQ, QINR, BP, and PINR. */
 
@@ -3775,7 +3775,7 @@ L14:
     return 0;
 } /* intadd_ */
 
-/* Subroutine */ int intrsc_(real *p1, real *p2, real *cn, real *p, integer *
+/* Subroutine */ int intrsc_(doublereal *p1, doublereal *p2, doublereal *cn, doublereal *p, integer *
 	ier)
 {
     /* Builtin functions */
@@ -3783,7 +3783,7 @@ L14:
 
     /* Local variables */
     static integer i__;
-    static real t, d1, d2, pp[3], ppn;
+    static doublereal t, d1, d2, pp[3], ppn;
 
 
 /* *********************************************************** */
@@ -3870,7 +3870,7 @@ L14:
 /* Solve for T such that <PP,CN> = 0 and compute PP and PPN. */
 
     t = d1 / (d1 - d2);
-    ppn = (float)0.;
+    ppn = (double)0.;
     for (i__ = 1; i__ <= 3; ++i__) {
 	pp[i__ - 1] = p1[i__] + t * (p2[i__] - p1[i__]);
 	ppn += pp[i__ - 1] * pp[i__ - 1];
@@ -3879,7 +3879,7 @@ L14:
 
 /* PPN = 0 iff PP = 0 iff P2 = -P1 (and T = .5). */
 
-    if (ppn == (float)0.) {
+    if (ppn == (double)0.) {
 	*ier = 2;
 	return 0;
     }
@@ -3901,7 +3901,7 @@ integer jrand_(integer *n, integer *ix, integer *iy, integer *iz)
     integer ret_val;
 
     /* Local variables */
-    static real u, x;
+    static doublereal u, x;
 
 
 /* *********************************************************** */
@@ -3958,15 +3958,15 @@ integer jrand_(integer *n, integer *ix, integer *iy, integer *iz)
     *ix = *ix * 171 % 30269;
     *iy = *iy * 172 % 30307;
     *iz = *iz * 170 % 30323;
-    x = (real) (*ix) / (float)30269. + (real) (*iy) / (float)30307. + (real) (
-	    *iz) / (float)30323.;
+    x = (doublereal) (*ix) / (double)30269. + (doublereal) (*iy) / (double)30307. + (doublereal) (
+	    *iz) / (double)30323.;
     u = x - (integer) x;
-    ret_val = (real) (*n) * u + (float)1.;
+    ret_val = (doublereal) (*n) * u + (double)1.;
     return ret_val;
 } /* jrand_ */
 
-logical left_(real *x1, real *y1, real *z1, real *x2, real *y2, real *z2, 
-	real *x0, real *y0, real *z0)
+logical left_(doublereal *x1, doublereal *y1, doublereal *z1, doublereal *x2, doublereal *y2, doublereal *z2, 
+	doublereal *x0, doublereal *y0, doublereal *z0)
 {
     /* System generated locals */
     logical ret_val;
@@ -4009,7 +4009,7 @@ logical left_(real *x1, real *y1, real *z1, real *x2, real *y2, real *z2,
 /* LEFT = TRUE iff <N0,N1 X N2> = det(N0,N1,N2) .GE. 0. */
 
     ret_val = *x0 * (*y1 * *z2 - *y2 * *z1) - *y0 * (*x1 * *z2 - *x2 * *z1) + 
-	    *z0 * (*x1 * *y2 - *x2 * *y1) >= (float)0.;
+	    *z0 * (*x1 * *y2 - *x2 * *y1) >= (double)0.;
     return ret_val;
 } /* left_ */
 
@@ -4155,8 +4155,8 @@ L2:
     return ret_val;
 } /* nbcnt_ */
 
-integer nearnd_(real *p, integer *ist, integer *n, real *x, real *y, real *
-	z__, integer *list, integer *lptr, integer *lend, real *al)
+integer nearnd_(doublereal *p, integer *ist, integer *n, doublereal *x, doublereal *y, doublereal *
+	z__, integer *list, integer *lptr, integer *lend, doublereal *al)
 {
     /* System generated locals */
     integer ret_val, i__1;
@@ -4166,17 +4166,17 @@ integer nearnd_(real *p, integer *ist, integer *n, real *x, real *y, real *
 
     /* Local variables */
     static integer l;
-    static real b1, b2, b3;
+    static doublereal b1, b2, b3;
     static integer i1, i2, i3, n1, n2, n3, lp, nn, nr;
-    static real ds1;
+    static doublereal ds1;
     static integer lp1, lp2;
-    static real dx1, dx2, dx3, dy1, dy2, dy3, dz1, dz2, dz3;
+    static doublereal dx1, dx2, dx3, dy1, dy2, dy3, dz1, dz2, dz3;
     static integer lpl;
-    static real dsr;
+    static doublereal dsr;
     static integer nst, listp[25], lptrp[25];
-    extern /* Subroutine */ int trfind_(integer *, real *, integer *, real *, 
-	    real *, real *, integer *, integer *, integer *, real *, real *, 
-	    real *, integer *, integer *, integer *);
+    extern /* Subroutine */ int trfind_(integer *, doublereal *, integer *, doublereal *, 
+	    doublereal *, doublereal *, integer *, integer *, integer *, doublereal *, doublereal *, 
+	    doublereal *, integer *, integer *, integer *);
     extern integer lstptr_(integer *, integer *, integer *, integer *);
 
 
@@ -4381,7 +4381,7 @@ L2:
     dy3 = y[n3] - p[2];
     dz3 = z__[n3] - p[3];
     if (dx3 * (dy2 * dz1 - dy1 * dz2) - dy3 * (dx2 * dz1 - dx1 * dz2) + dz3 * 
-	    (dx2 * dy1 - dx1 * dy2) <= (float)0.) {
+	    (dx2 * dy1 - dx1 * dy2) <= (double)0.) {
 	goto L3;
     }
 
@@ -4434,8 +4434,8 @@ L5:
 	;
     }
     dsr = -dsr;
-    if (dsr > (float)1.) {
-	dsr = (float)1.;
+    if (dsr > (double)1.) {
+	dsr = (double)1.;
     }
     *al = acos(dsr);
     ret_val = nr;
@@ -4448,7 +4448,7 @@ L6:
     return ret_val;
 } /* nearnd_ */
 
-/* Subroutine */ int optim_(real *x, real *y, real *z__, integer *na, integer 
+/* Subroutine */ int optim_(doublereal *x, doublereal *y, doublereal *z__, integer *na, integer 
 	*list, integer *lptr, integer *lend, integer *nit, integer *iwk, 
 	integer *ier)
 {
@@ -4462,8 +4462,8 @@ L6:
     extern /* Subroutine */ int swap_(integer *, integer *, integer *, 
 	    integer *, integer *, integer *, integer *, integer *);
     static integer maxit;
-    extern logical swptst_(integer *, integer *, integer *, integer *, real *,
-	     real *, real *);
+    extern logical swptst_(integer *, integer *, integer *, integer *, doublereal *,
+	     doublereal *, doublereal *);
 
 
 /* *********************************************************** */
@@ -4487,7 +4487,7 @@ L6:
 /* or NIT iterations have been performed.  The bound on the */
 /* number of iterations may be necessary to prevent an */
 /* infinite loop caused by cycling (reversing the effect of a */
-/* previous swap) due to floating point inaccuracy when four */
+/* previous swap) due to doubleing point inaccuracy when four */
 /* or more nodes are nearly cocircular. */
 
 
@@ -4696,8 +4696,8 @@ L9:
     return 0;
 } /* optim_ */
 
-/* Subroutine */ int scoord_(real *px, real *py, real *pz, real *plat, real *
-	plon, real *pnrm)
+/* Subroutine */ int scoord_(doublereal *px, doublereal *py, doublereal *pz, doublereal *plat, doublereal *
+	plon, doublereal *pnrm)
 {
     /* Builtin functions */
     double sqrt(doublereal), atan2(doublereal, doublereal), asin(doublereal);
@@ -4742,23 +4742,23 @@ L9:
 /* *********************************************************** */
 
     *pnrm = sqrt(*px * *px + *py * *py + *pz * *pz);
-    if (*px != (float)0. || *py != (float)0.) {
+    if (*px != (double)0. || *py != (double)0.) {
 	*plon = atan2(*py, *px);
     } else {
-	*plon = (float)0.;
+	*plon = (double)0.;
     }
-    if (*pnrm != (float)0.) {
+    if (*pnrm != (double)0.) {
 	*plat = asin(*pz / *pnrm);
     } else {
-	*plat = (float)0.;
+	*plat = (double)0.;
     }
     return 0;
 } /* scoord_ */
 
-doublereal store_(real *x)
+doublereal store_(doublereal *x)
 {
     /* System generated locals */
-    real ret_val;
+    doublereal ret_val;
 
 
 /* *********************************************************** */
@@ -4772,7 +4772,7 @@ doublereal store_(real *x)
 
 /*   This function forces its argument X to be stored in a */
 /* memory location, thus providing a means of determining */
-/* floating point number characteristics (such as the machine */
+/* doubleing point number characteristics (such as the machine */
 /* precision) when it is necessary to avoid computation in */
 /* high precision registers. */
 
@@ -4924,14 +4924,14 @@ doublereal store_(real *x)
     return 0;
 } /* swap_ */
 
-logical swptst_(integer *n1, integer *n2, integer *n3, integer *n4, real *x, 
-	real *y, real *z__)
+logical swptst_(integer *n1, integer *n2, integer *n3, integer *n4, doublereal *x, 
+	doublereal *y, doublereal *z__)
 {
     /* System generated locals */
     logical ret_val;
 
     /* Local variables */
-    static real x4, y4, z4, dx1, dx2, dx3, dy1, dy2, dy3, dz1, dz2, dz3;
+    static doublereal x4, y4, z4, dx1, dx2, dx3, dy1, dy2, dy3, dz1, dz2, dz3;
 
 
 /* *********************************************************** */
@@ -5011,12 +5011,12 @@ logical swptst_(integer *n1, integer *n2, integer *n3, integer *n4, real *x,
 /*   (N3-N4,N2-N4 X N1-N4) > 0. */
 
     ret_val = dx3 * (dy2 * dz1 - dy1 * dz2) - dy3 * (dx2 * dz1 - dx1 * dz2) + 
-	    dz3 * (dx2 * dy1 - dx1 * dy2) > (float)0.;
+	    dz3 * (dx2 * dy1 - dx1 * dy2) > (double)0.;
     return ret_val;
 } /* swptst_ */
 
-/* Subroutine */ int trans_(integer *n, real *rlat, real *rlon, real *x, real 
-	*y, real *z__)
+/* Subroutine */ int trans_(integer *n, doublereal *rlat, doublereal *rlon, doublereal *x, doublereal 
+	*y, doublereal *z__)
 {
     /* System generated locals */
     integer i__1;
@@ -5026,7 +5026,7 @@ logical swptst_(integer *n1, integer *n2, integer *n3, integer *n4, real *x,
 
     /* Local variables */
     static integer i__, nn;
-    static real phi, theta, cosphi;
+    static doublereal phi, theta, cosphi;
 
 
 /* *********************************************************** */
@@ -5102,9 +5102,9 @@ logical swptst_(integer *n1, integer *n2, integer *n3, integer *n4, real *x,
     return 0;
 } /* trans_ */
 
-/* Subroutine */ int trfind_(integer *nst, real *p, integer *n, real *x, real 
-	*y, real *z__, integer *list, integer *lptr, integer *lend, real *b1, 
-	real *b2, real *b3, integer *i1, integer *i2, integer *i3)
+/* Subroutine */ int trfind_(integer *nst, doublereal *p, integer *n, doublereal *x, doublereal 
+	*y, doublereal *z__, integer *list, integer *lptr, integer *lend, doublereal *b1, 
+	doublereal *b2, doublereal *b3, integer *i1, integer *i2, integer *i3)
 {
     /* Initialized data */
 
@@ -5114,19 +5114,19 @@ logical swptst_(integer *n1, integer *n2, integer *n3, integer *n4, real *x,
 
     /* System generated locals */
     integer i__1;
-    real r__1, r__2;
+    doublereal r__1, r__2;
 
     /* Local variables */
-    static real q[3];
+    static doublereal q[3];
     static integer n0, n1, n2, n3, n4, nf;
-    static real s12;
+    static doublereal s12;
     static integer nl, lp;
-    static real xp, yp, zp;
+    static doublereal xp, yp, zp;
     static integer n1s, n2s;
-    static real eps, tol, ptn1, ptn2;
+    static doublereal eps, tol, ptn1, ptn2;
     static integer next;
     extern integer jrand_(integer *, integer *, integer *, integer *);
-    extern doublereal store_(real *);
+    extern doublereal store_(doublereal *);
     extern integer lstptr_(integer *, integer *, integer *, integer *);
 
 
@@ -5262,15 +5262,15 @@ logical swptst_(integer *n1, integer *n2, integer *n3, integer *n4, real *x,
 
 /* Compute the relative machine precision EPS and TOL. */
 
-    eps = (float)1.;
+    eps = (double)1.;
 L1:
-    eps /= (float)2.;
-    r__1 = eps + (float)1.;
-    if (store_(&r__1) > (float)1.) {
+    eps /= (double)2.;
+    r__1 = eps + (double)1.;
+    if (store_(&r__1) > (double)1.) {
 	goto L1;
     }
-    eps *= (float)2.;
-    tol = eps * (float)100.;
+    eps *= (double)2.;
+    tol = eps * (double)100.;
 
 /* Set NF and NL to the first and last neighbors of N0, and */
 /*   initialize N1 = NF. */
@@ -5292,7 +5292,7 @@ L2:
 L3:
 	if (xp * (y[n0] * z__[n1] - y[n1] * z__[n0]) - yp * (x[n0] * z__[n1] 
 		- x[n1] * z__[n0]) + zp * (x[n0] * y[n1] - x[n1] * y[n0]) < (
-		float)0.) {
+		double)0.) {
 	    lp = lptr[lp];
 	    n1 = list[lp];
 	    if (n1 == nl) {
@@ -5307,7 +5307,7 @@ L3:
 	nl = -nl;
 	if (xp * (y[n0] * z__[nf] - y[nf] * z__[n0]) - yp * (x[n0] * z__[nf] 
 		- x[nf] * z__[n0]) + zp * (x[n0] * y[nf] - x[nf] * y[n0]) < (
-		float)0.) {
+		double)0.) {
 
 /*   P is to the right of the boundary edge N0->NF. */
 
@@ -5317,7 +5317,7 @@ L3:
 	}
 	if (xp * (y[nl] * z__[n0] - y[n0] * z__[nl]) - yp * (x[nl] * z__[n0] 
 		- x[n0] * z__[nl]) + zp * (x[nl] * y[n0] - x[n0] * y[nl]) < (
-		float)0.) {
+		double)0.) {
 
 /*   P is to the right of the boundary edge NL->N0. */
 
@@ -5334,7 +5334,7 @@ L4:
     lp = lptr[lp];
     n2 = (i__1 = list[lp], abs(i__1));
     if (xp * (y[n0] * z__[n2] - y[n2] * z__[n0]) - yp * (x[n0] * z__[n2] - x[
-	    n2] * z__[n0]) + zp * (x[n0] * y[n2] - x[n2] * y[n0]) < (float)0.)
+	    n2] * z__[n0]) + zp * (x[n0] * y[n2] - x[n2] * y[n0]) < (double)0.)
 	     {
 	goto L7;
     }
@@ -5343,7 +5343,7 @@ L4:
 	goto L4;
     }
     if (xp * (y[n0] * z__[nf] - y[nf] * z__[n0]) - yp * (x[n0] * z__[nf] - x[
-	    nf] * z__[n0]) + zp * (x[n0] * y[nf] - x[nf] * y[n0]) < (float)0.)
+	    nf] * z__[n0]) + zp * (x[n0] * y[nf] - x[nf] * y[n0]) < (double)0.)
 	     {
 	goto L6;
     }
@@ -5352,7 +5352,7 @@ L4:
 /*   of N0.  Test for P = +/-N0. */
 
     r__2 = (r__1 = x[n0] * xp + y[n0] * yp + z__[n0] * zp, dabs(r__1));
-    if (store_(&r__2) < (float)1. - eps * (float)4.) {
+    if (store_(&r__2) < (double)1. - eps * (double)4.) {
 
 /*   All points are collinear iff P Left NB->N0 for all */
 /*     neighbors NB of N0.  Search the neighbors of N0. */
@@ -5361,7 +5361,7 @@ L4:
 L5:
 	if (xp * (y[n1] * z__[n0] - y[n0] * z__[n1]) - yp * (x[n1] * z__[n0] 
 		- x[n0] * z__[n1]) + zp * (x[n1] * y[n0] - x[n0] * y[n1]) >= (
-		float)0.) {
+		double)0.) {
 	    lp = lptr[lp];
 	    n1 = (i__1 = list[lp], abs(i__1));
 	    if (n1 == nl) {
@@ -5396,7 +5396,7 @@ L7:
 L8:
     *b3 = xp * (y[n1] * z__[n2] - y[n2] * z__[n1]) - yp * (x[n1] * z__[n2] - 
 	    x[n2] * z__[n1]) + zp * (x[n1] * y[n2] - x[n2] * y[n1]);
-    if (*b3 < (float)0.) {
+    if (*b3 < (double)0.) {
 
 /*   Set N4 to the first neighbor of N2 following N1 (the */
 /*     node opposite N2->N1) unless N1->N2 is a boundary arc. */
@@ -5413,7 +5413,7 @@ L8:
 
 	if (xp * (y[n0] * z__[n4] - y[n4] * z__[n0]) - yp * (x[n0] * z__[n4] 
 		- x[n4] * z__[n0]) + zp * (x[n0] * y[n4] - x[n4] * y[n0]) < (
-		float)0.) {
+		double)0.) {
 	    n3 = n2;
 	    n2 = n4;
 	    n1s = n1;
@@ -5460,7 +5460,7 @@ L8:
 /*   B3 = 0 and thus P lies on N1->N2. Compute */
 /*     B1 = Det(P,N2 X N1,N2) and B2 = Det(P,N1,N2 X N1). */
 
-	*b3 = (float)0.;
+	*b3 = (double)0.;
 	s12 = x[n1] * x[n2] + y[n1] * y[n2] + z__[n1] * z__[n2];
 	ptn1 = xp * x[n1] + yp * y[n1] + zp * z__[n1];
 	ptn2 = xp * x[n2] + yp * y[n2] + zp * z__[n2];
@@ -5480,11 +5480,11 @@ L8:
     *i1 = n1;
     *i2 = n2;
     *i3 = n3;
-    if (*b1 < (float)0.) {
-	*b1 = (float)0.;
+    if (*b1 < (double)0.) {
+	*b1 = (double)0.;
     }
-    if (*b2 < (float)0.) {
-	*b2 = (float)0.;
+    if (*b2 < (double)0.) {
+	*b2 = (double)0.;
     }
     return 0;
 
@@ -5505,7 +5505,7 @@ L10:
     next = list[lp];
     if (xp * (y[n2] * z__[next] - y[next] * z__[n2]) - yp * (x[n2] * z__[next]
 	     - x[next] * z__[n2]) + zp * (x[n2] * y[next] - x[next] * y[n2]) 
-	    >= (float)0.) {
+	    >= (double)0.) {
 
 /*   N2 is the rightmost visible node if P Forward N2->N1 */
 /*     or NEXT Forward N2->N1.  Set Q to (N2 X N1) X N2. */
@@ -5514,10 +5514,10 @@ L10:
 	q[0] = x[n1] - s12 * x[n2];
 	q[1] = y[n1] - s12 * y[n2];
 	q[2] = z__[n1] - s12 * z__[n2];
-	if (xp * q[0] + yp * q[1] + zp * q[2] >= (float)0.) {
+	if (xp * q[0] + yp * q[1] + zp * q[2] >= (double)0.) {
 	    goto L11;
 	}
-	if (x[next] * q[0] + y[next] * q[1] + z__[next] * q[2] >= (float)0.) {
+	if (x[next] * q[0] + y[next] * q[1] + z__[next] * q[2] >= (double)0.) {
 	    goto L11;
 	}
 
@@ -5561,7 +5561,7 @@ L12:
 	next = -list[lp];
 	if (xp * (y[next] * z__[n1] - y[n1] * z__[next]) - yp * (x[next] * 
 		z__[n1] - x[n1] * z__[next]) + zp * (x[next] * y[n1] - x[n1] *
-		 y[next]) >= (float)0.) {
+		 y[next]) >= (double)0.) {
 
 /*   N1 is the leftmost visible node if P or NEXT is */
 /*     forward of N1->N2.  Compute Q = N1 X (N2 X N1). */
@@ -5570,10 +5570,10 @@ L12:
 	    q[0] = x[n2] - s12 * x[n1];
 	    q[1] = y[n2] - s12 * y[n1];
 	    q[2] = z__[n2] - s12 * z__[n1];
-	    if (xp * q[0] + yp * q[1] + zp * q[2] >= (float)0.) {
+	    if (xp * q[0] + yp * q[1] + zp * q[2] >= (double)0.) {
 		goto L13;
 	    }
-	    if (x[next] * q[0] + y[next] * q[1] + z__[next] * q[2] >= (float)
+	    if (x[next] * q[0] + y[next] * q[1] + z__[next] * q[2] >= (double)
 		    0.) {
 		goto L13;
 	    }
@@ -5924,7 +5924,7 @@ L12:
     return 0;
 } /* trlist_ */
 
-/* Subroutine */ int trlprt_(integer *n, real *x, real *y, real *z__, integer 
+/* Subroutine */ int trlprt_(integer *n, doublereal *x, doublereal *y, doublereal *z__, integer 
 	*iflag, integer *nrow, integer *nt, integer *ltri, integer *lout)
 {
     /* Initialized data */
@@ -6119,9 +6119,9 @@ x,\002NA = \002,i5,\002 Arcs\002,5x,\002NT = \002,i5,\002 Triangles\002)";
 	    io___341.ciunit = lun;
 	    s_wsfe(&io___341);
 	    do_fio(&c__1, (char *)&i__, (ftnlen)sizeof(integer));
-	    do_fio(&c__1, (char *)&x[i__], (ftnlen)sizeof(real));
-	    do_fio(&c__1, (char *)&y[i__], (ftnlen)sizeof(real));
-	    do_fio(&c__1, (char *)&z__[i__], (ftnlen)sizeof(real));
+	    do_fio(&c__1, (char *)&x[i__], (ftnlen)sizeof(doublereal));
+	    do_fio(&c__1, (char *)&y[i__], (ftnlen)sizeof(doublereal));
+	    do_fio(&c__1, (char *)&z__[i__], (ftnlen)sizeof(doublereal));
 	    e_wsfe();
 	    ++nl;
 /* L1: */
@@ -6145,8 +6145,8 @@ x,\002NA = \002,i5,\002 Arcs\002,5x,\002NT = \002,i5,\002 Triangles\002)";
 	    io___344.ciunit = lun;
 	    s_wsfe(&io___344);
 	    do_fio(&c__1, (char *)&i__, (ftnlen)sizeof(integer));
-	    do_fio(&c__1, (char *)&x[i__], (ftnlen)sizeof(real));
-	    do_fio(&c__1, (char *)&y[i__], (ftnlen)sizeof(real));
+	    do_fio(&c__1, (char *)&x[i__], (ftnlen)sizeof(doublereal));
+	    do_fio(&c__1, (char *)&y[i__], (ftnlen)sizeof(doublereal));
 	    e_wsfe();
 	    ++nl;
 /* L2: */
@@ -6214,23 +6214,23 @@ x,\002NA = \002,i5,\002 Arcs\002,5x,\002NT = \002,i5,\002 Triangles\002)";
 
 } /* trlprt_ */
 
-/* Subroutine */ int trmesh_(integer *n, real *x, real *y, real *z__, integer 
+/* Subroutine */ int trmesh_(integer *n, doublereal *x, doublereal *y, doublereal *z__, integer 
 	*list, integer *lptr, integer *lend, integer *lnew, integer *near__, 
-	integer *next, real *dist, integer *ier)
+	integer *next, doublereal *dist, integer *ier)
 {
     /* System generated locals */
     integer i__1, i__2;
 
     /* Local variables */
-    static real d__;
+    static doublereal d__;
     static integer i__, j, k;
-    static real d1, d2, d3;
+    static doublereal d1, d2, d3;
     static integer i0, lp, nn, lpl;
-    extern logical left_(real *, real *, real *, real *, real *, real *, real 
-	    *, real *, real *);
+    extern logical left_(doublereal *, doublereal *, doublereal *, doublereal *, doublereal *, doublereal *, doublereal 
+	    *, doublereal *, doublereal *);
     static integer nexti;
-    extern /* Subroutine */ int addnod_(integer *, integer *, real *, real *, 
-	    real *, integer *, integer *, integer *, integer *, integer *);
+    extern /* Subroutine */ int addnod_(integer *, integer *, doublereal *, doublereal *, 
+	    doublereal *, integer *, integer *, integer *, integer *, integer *);
 
 
 /* *********************************************************** */
@@ -6327,7 +6327,7 @@ x,\002NA = \002,i5,\002 Arcs\002,5x,\002NT = \002,i5,\002 Triangles\002)";
 /*             spherical coordinates. */
 
 /*  STORE  - Forces a value to be stored in main memory so */
-/*             that the precision of floating point numbers */
+/*             that the precision of doubleing point numbers */
 /*             in memory locations rather than registers is */
 /*             computed. */
 
@@ -6672,16 +6672,16 @@ L5:
     return 0;
 } /* trmesh_ */
 
-/* Subroutine */ int trplot_(integer *lun, real *pltsiz, real *elat, real *
-	elon, real *a, integer *n, real *x, real *y, real *z__, integer *list,
+/* Subroutine */ int trplot_(integer *lun, doublereal *pltsiz, doublereal *elat, doublereal *
+	elon, doublereal *a, integer *n, doublereal *x, doublereal *y, doublereal *z__, integer *list,
 	 integer *lptr, integer *lend, char *title, logical *numbr, integer *
 	ier, ftnlen title_len)
 {
     /* Initialized data */
 
     static logical annot = TRUE_;
-    static real fsizn = (float)10.;
-    static real fsizt = (float)16.;
+    static doublereal fsizn = (double)10.;
+    static doublereal fsizt = (double)16.;
 
     /* Format strings */
     static char fmt_100[] = "(\002%!PS-Adobe-3.0 EPSF-3.0\002/\002%%Bounding\
@@ -6713,22 +6713,22 @@ w\002)";
 
     /* System generated locals */
     integer i__1, i__2;
-    real r__1;
+    doublereal r__1;
 
     /* Builtin functions */
     double atan(doublereal), sin(doublereal);
-    integer i_nint(real *), s_wsfe(cilist *), do_fio(integer *, char *, 
+    integer i_nint(doublereal *), s_wsfe(cilist *), do_fio(integer *, char *, 
 	    ftnlen), e_wsfe();
     double cos(doublereal), sqrt(doublereal);
 
     /* Local variables */
-    static real t;
+    static doublereal t;
     static integer n0, n1;
-    static real x0, x1, y0, y1, z0, z1, cf, r11, r12, r21, ct, r22, r23, sf;
+    static doublereal x0, x1, y0, y1, z0, z1, cf, r11, r12, r21, ct, r22, r23, sf;
     static integer ir, lp;
-    static real ex, ey, ez, wr, tx, ty;
+    static doublereal ex, ey, ez, wr, tx, ty;
     static integer lpl;
-    static real wrs;
+    static doublereal wrs;
     static integer ipx1, ipx2, ipy1, ipy2;
 
     /* Fortran I/O blocks */
@@ -6919,11 +6919,11 @@ w\002)";
 
 /* Test for invalid parameters. */
 
-    if (*lun < 0 || *lun > 99 || *pltsiz < (float)1. || *pltsiz > (float)8.5 
+    if (*lun < 0 || *lun > 99 || *pltsiz < (double)1. || *pltsiz > (double)8.5 
 	    || *n < 3) {
 	goto L11;
     }
-    if (dabs(*elat) > (float)90. || dabs(*elon) > (float)180. || *a > (float)
+    if (dabs(*elat) > (double)90. || dabs(*elon) > (double)180. || *a > (double)
 	    90.) {
 	goto L12;
     }
@@ -6931,7 +6931,7 @@ w\002)";
 /* Compute a conversion factor CF for degrees to radians */
 /*   and compute the window radius WR. */
 
-    cf = atan((float)1.) / (float)45.;
+    cf = atan((double)1.) / (double)45.;
     wr = sin(cf * *a);
     wrs = wr * wr;
 
@@ -6944,7 +6944,7 @@ w\002)";
 /*   by 11 inch page.  The center of the page is (306,396), */
 /*   and IR = PLTSIZ/2 in points. */
 
-    r__1 = *pltsiz * (float)36.;
+    r__1 = *pltsiz * (double)36.;
     ir = i_nint(&r__1);
     ipx1 = 306 - ir;
     ipx2 = ir + 306;
@@ -6983,7 +6983,7 @@ w\002)";
 /*   of a viewport box obtained by shrinking the bounding box */
 /*   by 12% in each dimension. */
 
-    r__1 = (real) ir * (float).88;
+    r__1 = (doublereal) ir * (double).88;
     ir = i_nint(&r__1);
     ipx1 = 306 - ir;
     ipx2 = ir + 306;
@@ -6993,13 +6993,13 @@ w\002)";
 /* Set the line thickness to 2 points, and draw the */
 /*   viewport boundary. */
 
-    t = (float)2.;
+    t = (double)2.;
     io___379.ciunit = *lun;
     i__1 = s_wsfe(&io___379);
     if (i__1 != 0) {
 	goto L13;
     }
-    i__1 = do_fio(&c__1, (char *)&t, (ftnlen)sizeof(real));
+    i__1 = do_fio(&c__1, (char *)&t, (ftnlen)sizeof(doublereal));
     if (i__1 != 0) {
 	goto L13;
     }
@@ -7033,7 +7033,7 @@ w\002)";
 /* Set up an affine mapping from the window box [-WR,WR] X */
 /*   [-WR,WR] to the viewport box. */
 
-    sf = (real) ir / wr;
+    sf = (doublereal) ir / wr;
     tx = ipx1 + sf * wr;
     ty = ipy1 + sf * wr;
     io___385.ciunit = *lun;
@@ -7041,19 +7041,19 @@ w\002)";
     if (i__1 != 0) {
 	goto L13;
     }
-    i__1 = do_fio(&c__1, (char *)&tx, (ftnlen)sizeof(real));
+    i__1 = do_fio(&c__1, (char *)&tx, (ftnlen)sizeof(doublereal));
     if (i__1 != 0) {
 	goto L13;
     }
-    i__1 = do_fio(&c__1, (char *)&ty, (ftnlen)sizeof(real));
+    i__1 = do_fio(&c__1, (char *)&ty, (ftnlen)sizeof(doublereal));
     if (i__1 != 0) {
 	goto L13;
     }
-    i__1 = do_fio(&c__1, (char *)&sf, (ftnlen)sizeof(real));
+    i__1 = do_fio(&c__1, (char *)&sf, (ftnlen)sizeof(doublereal));
     if (i__1 != 0) {
 	goto L13;
     }
-    i__1 = do_fio(&c__1, (char *)&sf, (ftnlen)sizeof(real));
+    i__1 = do_fio(&c__1, (char *)&sf, (ftnlen)sizeof(doublereal));
     if (i__1 != 0) {
 	goto L13;
     }
@@ -7066,13 +7066,13 @@ w\002)";
 /*   scaling which is applied to all subsequent output. */
 /*   Set it to 1.0 point. */
 
-    t = (float)1. / sf;
+    t = (double)1. / sf;
     io___386.ciunit = *lun;
     i__1 = s_wsfe(&io___386);
     if (i__1 != 0) {
 	goto L13;
     }
-    i__1 = do_fio(&c__1, (char *)&t, (ftnlen)sizeof(real));
+    i__1 = do_fio(&c__1, (char *)&t, (ftnlen)sizeof(doublereal));
     if (i__1 != 0) {
 	goto L13;
     }
@@ -7098,7 +7098,7 @@ w\002)";
     if (i__1 != 0) {
 	goto L13;
     }
-    i__1 = do_fio(&c__1, (char *)&wr, (ftnlen)sizeof(real));
+    i__1 = do_fio(&c__1, (char *)&wr, (ftnlen)sizeof(doublereal));
     if (i__1 != 0) {
 	goto L13;
     }
@@ -7132,12 +7132,12 @@ w\002)";
     ex = ct * cos(t);
     ey = ct * sin(t);
     ez = sin(cf * *elat);
-    if (ct != (float)0.) {
+    if (ct != (double)0.) {
 	r11 = -ey / ct;
 	r12 = ex / ct;
     } else {
-	r11 = (float)0.;
-	r12 = (float)1.;
+	r11 = (double)0.;
+	r12 = (double)1.;
     }
     r21 = -ez * r12;
     r22 = ez * r11;
@@ -7149,7 +7149,7 @@ w\002)";
     i__1 = *n;
     for (n0 = 1; n0 <= i__1; ++n0) {
 	z0 = ex * x[n0] + ey * y[n0] + ez * z__[n0];
-	if (z0 < (float)0.) {
+	if (z0 < (double)0.) {
 	    goto L3;
 	}
 	x0 = r11 * x[n0] + r12 * y[n0];
@@ -7169,7 +7169,7 @@ L1:
 	x1 = r11 * x[n1] + r12 * y[n1];
 	y1 = r21 * x[n1] + r22 * y[n1] + r23 * z__[n1];
 	z1 = ex * x[n1] + ey * y[n1] + ez * z__[n1];
-	if (z1 < (float)0.) {
+	if (z1 < (double)0.) {
 
 /*   N1 is a 'southern hemisphere' point.  Move it to the */
 /*     intersection of edge N0-N1 with the equator so that */
@@ -7186,7 +7186,7 @@ L1:
 /*   If node N1 is in the window and N1 < N0, bypass edge */
 /*     N0->N1 (since edge N1->N0 has already been drawn). */
 
-	if (z1 >= (float)0. && x1 * x1 + y1 * y1 <= wrs && n1 < n0) {
+	if (z1 >= (double)0. && x1 * x1 + y1 * y1 <= wrs && n1 < n0) {
 	    goto L2;
 	}
 
@@ -7197,19 +7197,19 @@ L1:
 	if (i__2 != 0) {
 	    goto L13;
 	}
-	i__2 = do_fio(&c__1, (char *)&x0, (ftnlen)sizeof(real));
+	i__2 = do_fio(&c__1, (char *)&x0, (ftnlen)sizeof(doublereal));
 	if (i__2 != 0) {
 	    goto L13;
 	}
-	i__2 = do_fio(&c__1, (char *)&y0, (ftnlen)sizeof(real));
+	i__2 = do_fio(&c__1, (char *)&y0, (ftnlen)sizeof(doublereal));
 	if (i__2 != 0) {
 	    goto L13;
 	}
-	i__2 = do_fio(&c__1, (char *)&x1, (ftnlen)sizeof(real));
+	i__2 = do_fio(&c__1, (char *)&x1, (ftnlen)sizeof(doublereal));
 	if (i__2 != 0) {
 	    goto L13;
 	}
-	i__2 = do_fio(&c__1, (char *)&y1, (ftnlen)sizeof(real));
+	i__2 = do_fio(&c__1, (char *)&y1, (ftnlen)sizeof(doublereal));
 	if (i__2 != 0) {
 	    goto L13;
 	}
@@ -7261,7 +7261,7 @@ L3:
 	if (i__1 != 0) {
 	    goto L13;
 	}
-	i__1 = do_fio(&c__1, (char *)&t, (ftnlen)sizeof(real));
+	i__1 = do_fio(&c__1, (char *)&t, (ftnlen)sizeof(doublereal));
 	if (i__1 != 0) {
 	    goto L13;
 	}
@@ -7275,7 +7275,7 @@ L3:
 
 	i__1 = *n;
 	for (n0 = 1; n0 <= i__1; ++n0) {
-	    if (ex * x[n0] + ey * y[n0] + ez * z__[n0] < (float)0.) {
+	    if (ex * x[n0] + ey * y[n0] + ez * z__[n0] < (double)0.) {
 		goto L4;
 	    }
 	    x0 = r11 * x[n0] + r12 * y[n0];
@@ -7293,11 +7293,11 @@ L3:
 	    if (i__2 != 0) {
 		goto L13;
 	    }
-	    i__2 = do_fio(&c__1, (char *)&x0, (ftnlen)sizeof(real));
+	    i__2 = do_fio(&c__1, (char *)&x0, (ftnlen)sizeof(doublereal));
 	    if (i__2 != 0) {
 		goto L13;
 	    }
-	    i__2 = do_fio(&c__1, (char *)&y0, (ftnlen)sizeof(real));
+	    i__2 = do_fio(&c__1, (char *)&y0, (ftnlen)sizeof(doublereal));
 	    if (i__2 != 0) {
 		goto L13;
 	    }
@@ -7332,7 +7332,7 @@ L4:
     if (i__1 != 0) {
 	goto L13;
     }
-    i__1 = do_fio(&c__1, (char *)&t, (ftnlen)sizeof(real));
+    i__1 = do_fio(&c__1, (char *)&t, (ftnlen)sizeof(doublereal));
     if (i__1 != 0) {
 	goto L13;
     }
@@ -7343,7 +7343,7 @@ L4:
 
 /* Display TITLE centered above the plot: */
 
-    y0 = wr + t * (float)3.;
+    y0 = wr + t * (double)3.;
     io___416.ciunit = *lun;
     i__1 = s_wsfe(&io___416);
     if (i__1 != 0) {
@@ -7353,7 +7353,7 @@ L4:
     if (i__1 != 0) {
 	goto L13;
     }
-    i__1 = do_fio(&c__1, (char *)&y0, (ftnlen)sizeof(real));
+    i__1 = do_fio(&c__1, (char *)&y0, (ftnlen)sizeof(doublereal));
     if (i__1 != 0) {
 	goto L13;
     }
@@ -7379,17 +7379,17 @@ L4:
 /* Display the window center and radius below the plot. */
 
 	x0 = -wr;
-	y0 = -wr - (float)50. / sf;
+	y0 = -wr - (double)50. / sf;
 	io___418.ciunit = *lun;
 	i__1 = s_wsfe(&io___418);
 	if (i__1 != 0) {
 	    goto L13;
 	}
-	i__1 = do_fio(&c__1, (char *)&x0, (ftnlen)sizeof(real));
+	i__1 = do_fio(&c__1, (char *)&x0, (ftnlen)sizeof(doublereal));
 	if (i__1 != 0) {
 	    goto L13;
 	}
-	i__1 = do_fio(&c__1, (char *)&y0, (ftnlen)sizeof(real));
+	i__1 = do_fio(&c__1, (char *)&y0, (ftnlen)sizeof(doublereal));
 	if (i__1 != 0) {
 	    goto L13;
 	}
@@ -7402,11 +7402,11 @@ L4:
 	if (i__1 != 0) {
 	    goto L13;
 	}
-	i__1 = do_fio(&c__1, (char *)&(*elat), (ftnlen)sizeof(real));
+	i__1 = do_fio(&c__1, (char *)&(*elat), (ftnlen)sizeof(doublereal));
 	if (i__1 != 0) {
 	    goto L13;
 	}
-	i__1 = do_fio(&c__1, (char *)&(*elon), (ftnlen)sizeof(real));
+	i__1 = do_fio(&c__1, (char *)&(*elon), (ftnlen)sizeof(doublereal));
 	if (i__1 != 0) {
 	    goto L13;
 	}
@@ -7414,17 +7414,17 @@ L4:
 	if (i__1 != 0) {
 	    goto L13;
 	}
-	y0 -= t * (float)2.;
+	y0 -= t * (double)2.;
 	io___420.ciunit = *lun;
 	i__1 = s_wsfe(&io___420);
 	if (i__1 != 0) {
 	    goto L13;
 	}
-	i__1 = do_fio(&c__1, (char *)&x0, (ftnlen)sizeof(real));
+	i__1 = do_fio(&c__1, (char *)&x0, (ftnlen)sizeof(doublereal));
 	if (i__1 != 0) {
 	    goto L13;
 	}
-	i__1 = do_fio(&c__1, (char *)&y0, (ftnlen)sizeof(real));
+	i__1 = do_fio(&c__1, (char *)&y0, (ftnlen)sizeof(doublereal));
 	if (i__1 != 0) {
 	    goto L13;
 	}
@@ -7437,7 +7437,7 @@ L4:
 	if (i__1 != 0) {
 	    goto L13;
 	}
-	i__1 = do_fio(&c__1, (char *)&(*a), (ftnlen)sizeof(real));
+	i__1 = do_fio(&c__1, (char *)&(*a), (ftnlen)sizeof(doublereal));
 	if (i__1 != 0) {
 	    goto L13;
 	}
@@ -7502,7 +7502,7 @@ L13:
     return 0;
 } /* trplot_ */
 
-/* Subroutine */ int trprnt_(integer *n, real *x, real *y, real *z__, integer 
+/* Subroutine */ int trprnt_(integer *n, doublereal *x, doublereal *y, doublereal *z__, integer 
 	*iflag, integer *list, integer *lptr, integer *lend, integer *lout)
 {
     /* Initialized data */
@@ -7782,8 +7782,8 @@ L3:
 	    io___446.ciunit = lun;
 	    s_wsfe(&io___446);
 	    do_fio(&c__1, (char *)&node, (ftnlen)sizeof(integer));
-	    do_fio(&c__1, (char *)&x[node], (ftnlen)sizeof(real));
-	    do_fio(&c__1, (char *)&y[node], (ftnlen)sizeof(real));
+	    do_fio(&c__1, (char *)&x[node], (ftnlen)sizeof(doublereal));
+	    do_fio(&c__1, (char *)&y[node], (ftnlen)sizeof(doublereal));
 	    i__2 = k;
 	    for (i__ = 1; i__ <= i__2; ++i__) {
 		do_fio(&c__1, (char *)&nabor[i__ - 1], (ftnlen)sizeof(integer)
@@ -7841,9 +7841,9 @@ L5:
 	    io___450.ciunit = lun;
 	    s_wsfe(&io___450);
 	    do_fio(&c__1, (char *)&node, (ftnlen)sizeof(integer));
-	    do_fio(&c__1, (char *)&x[node], (ftnlen)sizeof(real));
-	    do_fio(&c__1, (char *)&y[node], (ftnlen)sizeof(real));
-	    do_fio(&c__1, (char *)&z__[node], (ftnlen)sizeof(real));
+	    do_fio(&c__1, (char *)&x[node], (ftnlen)sizeof(doublereal));
+	    do_fio(&c__1, (char *)&y[node], (ftnlen)sizeof(doublereal));
+	    do_fio(&c__1, (char *)&z__[node], (ftnlen)sizeof(doublereal));
 	    i__2 = k;
 	    for (i__ = 1; i__ <= i__2; ++i__) {
 		do_fio(&c__1, (char *)&nabor[i__ - 1], (ftnlen)sizeof(integer)
@@ -7881,16 +7881,16 @@ L5:
 
 } /* trprnt_ */
 
-/* Subroutine */ int vrplot_(integer *lun, real *pltsiz, real *elat, real *
-	elon, real *a, integer *n, real *x, real *y, real *z__, integer *nt, 
-	integer *listc, integer *lptr, integer *lend, real *xc, real *yc, 
-	real *zc, char *title, logical *numbr, integer *ier, ftnlen title_len)
+/* Subroutine */ int vrplot_(integer *lun, doublereal *pltsiz, doublereal *elat, doublereal *
+	elon, doublereal *a, integer *n, doublereal *x, doublereal *y, doublereal *z__, integer *nt, 
+	integer *listc, integer *lptr, integer *lend, doublereal *xc, doublereal *yc, 
+	doublereal *zc, char *title, logical *numbr, integer *ier, ftnlen title_len)
 {
     /* Initialized data */
 
     static logical annot = TRUE_;
-    static real fsizn = (float)10.;
-    static real fsizt = (float)16.;
+    static doublereal fsizn = (double)10.;
+    static doublereal fsizt = (double)16.;
 
     /* Format strings */
     static char fmt_100[] = "(\002%!PS-Adobe-3.0 EPSF-3.0\002/\002%%Bounding\
@@ -7922,24 +7922,24 @@ w\002)";
 
     /* System generated locals */
     integer i__1, i__2;
-    real r__1;
+    doublereal r__1;
 
     /* Builtin functions */
     double atan(doublereal), sin(doublereal);
-    integer i_nint(real *), s_wsfe(cilist *), do_fio(integer *, char *, 
+    integer i_nint(doublereal *), s_wsfe(cilist *), do_fio(integer *, char *, 
 	    ftnlen), e_wsfe();
     double cos(doublereal), sqrt(doublereal);
 
     /* Local variables */
-    static real t;
+    static doublereal t;
     static integer n0;
-    static real x0, x1, x2, y0, y1, y2, z1, z2, cf, r11, r12, r21, ct, r22, 
+    static doublereal x0, x1, x2, y0, y1, y2, z1, z2, cf, r11, r12, r21, ct, r22, 
 	    r23, sf;
     static integer ir, lp;
-    static real ex, ey, ez, wr, tx, ty;
+    static doublereal ex, ey, ez, wr, tx, ty;
     static logical in1, in2;
     static integer kv1, kv2, lpl;
-    static real wrs;
+    static doublereal wrs;
     static integer ipx1, ipx2, ipy1, ipy2;
 
     /* Fortran I/O blocks */
@@ -8173,11 +8173,11 @@ w\002)";
 
 /* Test for invalid parameters. */
 
-    if (*lun < 0 || *lun > 99 || *pltsiz < (float)1. || *pltsiz > (float)8.5 
+    if (*lun < 0 || *lun > 99 || *pltsiz < (double)1. || *pltsiz > (double)8.5 
 	    || *n < 3 || *nt != 2 * *n - 4) {
 	goto L11;
     }
-    if (dabs(*elat) > (float)90. || dabs(*elon) > (float)180. || *a > (float)
+    if (dabs(*elat) > (double)90. || dabs(*elon) > (double)180. || *a > (double)
 	    90.) {
 	goto L12;
     }
@@ -8185,7 +8185,7 @@ w\002)";
 /* Compute a conversion factor CF for degrees to radians */
 /*   and compute the window radius WR. */
 
-    cf = atan((float)1.) / (float)45.;
+    cf = atan((double)1.) / (double)45.;
     wr = sin(cf * *a);
     wrs = wr * wr;
 
@@ -8198,7 +8198,7 @@ w\002)";
 /*   by 11 inch page.  The center of the page is (306,396), */
 /*   and IR = PLTSIZ/2 in points. */
 
-    r__1 = *pltsiz * (float)36.;
+    r__1 = *pltsiz * (double)36.;
     ir = i_nint(&r__1);
     ipx1 = 306 - ir;
     ipx2 = ir + 306;
@@ -8237,7 +8237,7 @@ w\002)";
 /*   of a viewport box obtained by shrinking the bounding box */
 /*   by 12% in each dimension. */
 
-    r__1 = (real) ir * (float).88;
+    r__1 = (doublereal) ir * (double).88;
     ir = i_nint(&r__1);
     ipx1 = 306 - ir;
     ipx2 = ir + 306;
@@ -8247,13 +8247,13 @@ w\002)";
 /* Set the line thickness to 2 points, and draw the */
 /*   viewport boundary. */
 
-    t = (float)2.;
+    t = (double)2.;
     io___468.ciunit = *lun;
     i__1 = s_wsfe(&io___468);
     if (i__1 != 0) {
 	goto L13;
     }
-    i__1 = do_fio(&c__1, (char *)&t, (ftnlen)sizeof(real));
+    i__1 = do_fio(&c__1, (char *)&t, (ftnlen)sizeof(doublereal));
     if (i__1 != 0) {
 	goto L13;
     }
@@ -8287,7 +8287,7 @@ w\002)";
 /* Set up an affine mapping from the window box [-WR,WR] X */
 /*   [-WR,WR] to the viewport box. */
 
-    sf = (real) ir / wr;
+    sf = (doublereal) ir / wr;
     tx = ipx1 + sf * wr;
     ty = ipy1 + sf * wr;
     io___474.ciunit = *lun;
@@ -8295,19 +8295,19 @@ w\002)";
     if (i__1 != 0) {
 	goto L13;
     }
-    i__1 = do_fio(&c__1, (char *)&tx, (ftnlen)sizeof(real));
+    i__1 = do_fio(&c__1, (char *)&tx, (ftnlen)sizeof(doublereal));
     if (i__1 != 0) {
 	goto L13;
     }
-    i__1 = do_fio(&c__1, (char *)&ty, (ftnlen)sizeof(real));
+    i__1 = do_fio(&c__1, (char *)&ty, (ftnlen)sizeof(doublereal));
     if (i__1 != 0) {
 	goto L13;
     }
-    i__1 = do_fio(&c__1, (char *)&sf, (ftnlen)sizeof(real));
+    i__1 = do_fio(&c__1, (char *)&sf, (ftnlen)sizeof(doublereal));
     if (i__1 != 0) {
 	goto L13;
     }
-    i__1 = do_fio(&c__1, (char *)&sf, (ftnlen)sizeof(real));
+    i__1 = do_fio(&c__1, (char *)&sf, (ftnlen)sizeof(doublereal));
     if (i__1 != 0) {
 	goto L13;
     }
@@ -8320,13 +8320,13 @@ w\002)";
 /*   scaling which is applied to all subsequent output. */
 /*   Set it to 1.0 point. */
 
-    t = (float)1. / sf;
+    t = (double)1. / sf;
     io___475.ciunit = *lun;
     i__1 = s_wsfe(&io___475);
     if (i__1 != 0) {
 	goto L13;
     }
-    i__1 = do_fio(&c__1, (char *)&t, (ftnlen)sizeof(real));
+    i__1 = do_fio(&c__1, (char *)&t, (ftnlen)sizeof(doublereal));
     if (i__1 != 0) {
 	goto L13;
     }
@@ -8352,7 +8352,7 @@ w\002)";
     if (i__1 != 0) {
 	goto L13;
     }
-    i__1 = do_fio(&c__1, (char *)&wr, (ftnlen)sizeof(real));
+    i__1 = do_fio(&c__1, (char *)&wr, (ftnlen)sizeof(doublereal));
     if (i__1 != 0) {
 	goto L13;
     }
@@ -8386,12 +8386,12 @@ w\002)";
     ex = ct * cos(t);
     ey = ct * sin(t);
     ez = sin(cf * *elat);
-    if (ct != (float)0.) {
+    if (ct != (double)0.) {
 	r11 = -ey / ct;
 	r12 = ex / ct;
     } else {
-	r11 = (float)0.;
-	r12 = (float)1.;
+	r11 = (double)0.;
+	r12 = (double)1.;
     }
     r21 = -ez * r12;
     r22 = ez * r11;
@@ -8415,7 +8415,7 @@ w\002)";
 
 /*   IN2 = TRUE iff KV2 is in the window. */
 
-	in2 = z2 >= (float)0. && x2 * x2 + y2 * y2 <= wrs;
+	in2 = z2 >= (double)0. && x2 * x2 + y2 * y2 <= wrs;
 
 /* Loop on neighbors N1 of N0.  For each triangulation edge */
 /*   N0-N1, KV1-KV2 is the corresponding Voronoi edge. */
@@ -8435,7 +8435,7 @@ L1:
 	x2 = r11 * xc[kv2] + r12 * yc[kv2];
 	y2 = r21 * xc[kv2] + r22 * yc[kv2] + r23 * zc[kv2];
 	z2 = ex * xc[kv2] + ey * yc[kv2] + ez * zc[kv2];
-	in2 = z2 >= (float)0. && x2 * x2 + y2 * y2 <= wrs;
+	in2 = z2 >= (double)0. && x2 * x2 + y2 * y2 <= wrs;
 
 /* Add edge KV1-KV2 to the path iff both endpoints are inside */
 /*   the window and KV2 > KV1, or KV1 is inside and KV2 is */
@@ -8444,7 +8444,7 @@ L1:
 	if (! in1 || in2 && kv2 <= kv1) {
 	    goto L2;
 	}
-	if (z2 < (float)0.) {
+	if (z2 < (double)0.) {
 
 /*   KV2 is a 'southern hemisphere' point.  Move it to the */
 /*     intersection of edge KV1-KV2 with the equator so that */
@@ -8462,19 +8462,19 @@ L1:
 	if (i__2 != 0) {
 	    goto L13;
 	}
-	i__2 = do_fio(&c__1, (char *)&x1, (ftnlen)sizeof(real));
+	i__2 = do_fio(&c__1, (char *)&x1, (ftnlen)sizeof(doublereal));
 	if (i__2 != 0) {
 	    goto L13;
 	}
-	i__2 = do_fio(&c__1, (char *)&y1, (ftnlen)sizeof(real));
+	i__2 = do_fio(&c__1, (char *)&y1, (ftnlen)sizeof(doublereal));
 	if (i__2 != 0) {
 	    goto L13;
 	}
-	i__2 = do_fio(&c__1, (char *)&x2, (ftnlen)sizeof(real));
+	i__2 = do_fio(&c__1, (char *)&x2, (ftnlen)sizeof(doublereal));
 	if (i__2 != 0) {
 	    goto L13;
 	}
-	i__2 = do_fio(&c__1, (char *)&y2, (ftnlen)sizeof(real));
+	i__2 = do_fio(&c__1, (char *)&y2, (ftnlen)sizeof(doublereal));
 	if (i__2 != 0) {
 	    goto L13;
 	}
@@ -8525,7 +8525,7 @@ L2:
 	if (i__1 != 0) {
 	    goto L13;
 	}
-	i__1 = do_fio(&c__1, (char *)&t, (ftnlen)sizeof(real));
+	i__1 = do_fio(&c__1, (char *)&t, (ftnlen)sizeof(doublereal));
 	if (i__1 != 0) {
 	    goto L13;
 	}
@@ -8539,7 +8539,7 @@ L2:
 
 	i__1 = *n;
 	for (n0 = 1; n0 <= i__1; ++n0) {
-	    if (ex * x[n0] + ey * y[n0] + ez * z__[n0] < (float)0.) {
+	    if (ex * x[n0] + ey * y[n0] + ez * z__[n0] < (double)0.) {
 		goto L4;
 	    }
 	    x0 = r11 * x[n0] + r12 * y[n0];
@@ -8556,11 +8556,11 @@ L2:
 	    if (i__2 != 0) {
 		goto L13;
 	    }
-	    i__2 = do_fio(&c__1, (char *)&x0, (ftnlen)sizeof(real));
+	    i__2 = do_fio(&c__1, (char *)&x0, (ftnlen)sizeof(doublereal));
 	    if (i__2 != 0) {
 		goto L13;
 	    }
-	    i__2 = do_fio(&c__1, (char *)&y0, (ftnlen)sizeof(real));
+	    i__2 = do_fio(&c__1, (char *)&y0, (ftnlen)sizeof(doublereal));
 	    if (i__2 != 0) {
 		goto L13;
 	    }
@@ -8595,7 +8595,7 @@ L4:
     if (i__1 != 0) {
 	goto L13;
     }
-    i__1 = do_fio(&c__1, (char *)&t, (ftnlen)sizeof(real));
+    i__1 = do_fio(&c__1, (char *)&t, (ftnlen)sizeof(doublereal));
     if (i__1 != 0) {
 	goto L13;
     }
@@ -8606,7 +8606,7 @@ L4:
 
 /* Display TITLE centered above the plot: */
 
-    y0 = wr + t * (float)3.;
+    y0 = wr + t * (double)3.;
     io___510.ciunit = *lun;
     i__1 = s_wsfe(&io___510);
     if (i__1 != 0) {
@@ -8616,7 +8616,7 @@ L4:
     if (i__1 != 0) {
 	goto L13;
     }
-    i__1 = do_fio(&c__1, (char *)&y0, (ftnlen)sizeof(real));
+    i__1 = do_fio(&c__1, (char *)&y0, (ftnlen)sizeof(doublereal));
     if (i__1 != 0) {
 	goto L13;
     }
@@ -8642,17 +8642,17 @@ L4:
 /* Display the window center and radius below the plot. */
 
 	x0 = -wr;
-	y0 = -wr - (float)50. / sf;
+	y0 = -wr - (double)50. / sf;
 	io___512.ciunit = *lun;
 	i__1 = s_wsfe(&io___512);
 	if (i__1 != 0) {
 	    goto L13;
 	}
-	i__1 = do_fio(&c__1, (char *)&x0, (ftnlen)sizeof(real));
+	i__1 = do_fio(&c__1, (char *)&x0, (ftnlen)sizeof(doublereal));
 	if (i__1 != 0) {
 	    goto L13;
 	}
-	i__1 = do_fio(&c__1, (char *)&y0, (ftnlen)sizeof(real));
+	i__1 = do_fio(&c__1, (char *)&y0, (ftnlen)sizeof(doublereal));
 	if (i__1 != 0) {
 	    goto L13;
 	}
@@ -8665,11 +8665,11 @@ L4:
 	if (i__1 != 0) {
 	    goto L13;
 	}
-	i__1 = do_fio(&c__1, (char *)&(*elat), (ftnlen)sizeof(real));
+	i__1 = do_fio(&c__1, (char *)&(*elat), (ftnlen)sizeof(doublereal));
 	if (i__1 != 0) {
 	    goto L13;
 	}
-	i__1 = do_fio(&c__1, (char *)&(*elon), (ftnlen)sizeof(real));
+	i__1 = do_fio(&c__1, (char *)&(*elon), (ftnlen)sizeof(doublereal));
 	if (i__1 != 0) {
 	    goto L13;
 	}
@@ -8677,17 +8677,17 @@ L4:
 	if (i__1 != 0) {
 	    goto L13;
 	}
-	y0 -= t * (float)2.;
+	y0 -= t * (double)2.;
 	io___514.ciunit = *lun;
 	i__1 = s_wsfe(&io___514);
 	if (i__1 != 0) {
 	    goto L13;
 	}
-	i__1 = do_fio(&c__1, (char *)&x0, (ftnlen)sizeof(real));
+	i__1 = do_fio(&c__1, (char *)&x0, (ftnlen)sizeof(doublereal));
 	if (i__1 != 0) {
 	    goto L13;
 	}
-	i__1 = do_fio(&c__1, (char *)&y0, (ftnlen)sizeof(real));
+	i__1 = do_fio(&c__1, (char *)&y0, (ftnlen)sizeof(doublereal));
 	if (i__1 != 0) {
 	    goto L13;
 	}
@@ -8700,7 +8700,7 @@ L4:
 	if (i__1 != 0) {
 	    goto L13;
 	}
-	i__1 = do_fio(&c__1, (char *)&(*a), (ftnlen)sizeof(real));
+	i__1 = do_fio(&c__1, (char *)&(*a), (ftnlen)sizeof(doublereal));
 	if (i__1 != 0) {
 	    goto L13;
 	}

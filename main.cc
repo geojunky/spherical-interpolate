@@ -25,7 +25,7 @@
 using namespace std;
 const double PI = 3.14159265359;
 
-void ReadGrid(string fileName, int *nNodes, float **lons, float **lats, float **vals)
+void ReadGrid(string fileName, int *nNodes, double **lons, double **lats, double **vals)
 {
     char buffer[1024] = {};
     int numRows = 0;
@@ -44,39 +44,40 @@ void ReadGrid(string fileName, int *nNodes, float **lons, float **lats, float **
      * Allocate memory
      *-----------------------------------------------------------------------------*/
     *nNodes = numRows;
-    *lons = new float[numRows];
-    *lats = new float[numRows];
-    *vals = new float[numRows];
+    *lons = new double[numRows];
+    *lats = new double[numRows];
+    *vals = new double[numRows];
 
     /*-----------------------------------------------------------------------------
      * Read values 
      *-----------------------------------------------------------------------------*/
     {
+        double eps=1e-5;
         FILE *f = fopen(fileName.c_str(), "r");
         int counter = 0;
         double sf = atan(1.)/45.;
 
         while(fgets(buffer, sizeof(buffer), f)!=NULL) 
         {
-            float lon,lat,val;
+            double lon,lat,val;
 
-            sscanf(buffer, "%f %f %f", &lon, &lat, &val);
-
+            sscanf(buffer, "%lf %lf %lf", &lon, &lat, &val);
+            
             (*lons)[counter] = lon * sf; /* convert to radians */
             (*lats)[counter] = lat * sf; /* convert to radians */
             (*vals)[counter] = val;
             
-            /*if( ((*lons)[counter] < 0)      ||
-                ((*lons)[counter] > 2*PI)   ||
-                ((*lats)[counter] < -PI/2) || 
-                ((*lats)[counter] > PI/2) )
+            if( ((*lons)[counter] < 0)      ||
+                ((*lons)[counter] > (2*PI+eps))   ||
+                ((*lats)[counter] < (-PI/2-eps)) || 
+                ((*lats)[counter] > (PI/2+eps)) )
             {
                 cout << (*lons)[counter] << endl;
                 cout << (*lats)[counter] << endl;
 
                 cout << "Error in input: lat not within [-PI/2, PI/2] or lon not within [0, 2*PI]" << endl;
                 exit(0);
-            }*/
+            }
 
             counter++;
         }
@@ -87,15 +88,14 @@ void ReadGrid(string fileName, int *nNodes, float **lons, float **lats, float **
 
 int main(int argc, char **argv)
 {
-    if(argc != 2)
+    if(argc != 3)
     {
-        cout << "Usage: ./sphericalinterpolate <triplet-data-file> \n Note: data-file should have the format <lon lat val>. Angles should be in degrees. \
-                 Latitudes should be within [-PI/2, PI/2]. Longitudes should be within [0, 2*PI]" << endl;
+        cout << "\nUsage: ./sphericalinterpolate <triplet-data-file> <output-file> \n\nNote: data-file should have the format <lon lat val>. Angles should be in degrees. Latitudes should be within [-PI/2, PI/2]. Longitudes should be within [0, 2*PI]" << endl;
         return 0;
     }
 
     int nNodes = 0;
-    float *lons, *lats, *vals;
+    double *lons, *lats, *vals;
     
 
     /*-----------------------------------------------------------------------------
@@ -116,10 +116,10 @@ int main(int argc, char **argv)
     const int NLON = 361;
     const int NLAT = 181;
     
-    float *userLons             = new float[NLON*NLAT];
-    float *userLats             = new float[NLON*NLAT];
-    float *interpolatedValues   = new float[NLON*NLAT];
-    double sf                   = atan(1.)/45.;
+    double *userLons             = new double[NLON*NLAT];
+    double *userLats             = new double[NLON*NLAT];
+    double *interpolatedValues   = new double[NLON*NLAT];
+    double sf                    = atan(1.)/45.;
     
     for(int i=0; i<NLON; i++)
     {
@@ -135,7 +135,7 @@ int main(int argc, char **argv)
 
     /* Output user-defined locations and interpolated values */
     {
-        FILE *fo = fopen("/tmp/interpolated.txt", "w");
+        FILE *fo = fopen(argv[2], "w");
         
         for(int i=0; i<NLON; i++)
         {

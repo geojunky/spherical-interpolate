@@ -17,6 +17,7 @@
  */
 
 #include "SphericalSplineInterpolator.hh"
+#include <stdio.h>
 #include <cmath>
 #include <algorithm>
 #include <iostream>
@@ -28,7 +29,7 @@ int myrandom (int i)
     return rand()%i;
 }
 
-SphericalSplineInterpolator::SphericalSplineInterpolator(float *lons, float *lats, float *vals, int n)
+SphericalSplineInterpolator::SphericalSplineInterpolator(double *lons, double *lats, double *vals, int n)
 :m_numNodes(n)
 {
     /*-----------------------------------------------------------------------------
@@ -44,8 +45,8 @@ SphericalSplineInterpolator::SphericalSplineInterpolator(float *lons, float *lat
     vector<int> order(m_numNodes);
     for(int i=0; i<m_numNodes; i++)
     {
-        m_lons[i] = lons[i];
-        m_lats[i] = lats[i];
+        m_lons[i] = lons[i] + drand48()/1e5;
+        m_lats[i] = lats[i] + drand48()/1e5;
         m_vals[i] = vals[i];
 
         order[i]=i;
@@ -58,15 +59,15 @@ SphericalSplineInterpolator::SphericalSplineInterpolator(float *lons, float *lat
 
     for(int i=0; i<m_numNodes; i++) 
     {
-        float lat = m_lats[i];
+        double lat = m_lats[i];
         m_lats[i] = m_lats[order[i]];
         m_lats[order[i]] = lat;
         
-        float lon = m_lons[i];
+        double lon = m_lons[i];
         m_lons[i] = m_lons[order[i]];
         m_lons[order[i]] = lon;
         
-        float val = m_vals[i];
+        double val = m_vals[i];
         m_vals[i] = m_vals[order[i]];
         m_vals[order[i]] = val;
     }
@@ -82,17 +83,17 @@ SphericalSplineInterpolator::SphericalSplineInterpolator(float *lons, float *lat
      * Filter out nodes close to the poles
      *-----------------------------------------------------------------------------*/
     {
-        vector<float> fx;
-        vector<float> fy;
-        vector<float> fz;
-        vector<float> fv;
+        vector<double> fx;
+        vector<double> fy;
+        vector<double> fz;
+        vector<double> fv;
         
         int counter = 0;
         for(int i=0; i<m_numNodes; i++)
         {
             if(fabs(1-fabs(m_zs[i])) < 1e-5){}
             else
-            {
+            {            
                 fx.push_back(m_xs[i]);
                 fy.push_back(m_ys[i]);
                 fz.push_back(m_zs[i]);
@@ -138,8 +139,12 @@ SphericalSplineInterpolator::SphericalSplineInterpolator(float *lons, float *lat
              m_next.data(), 
              m_dist.data(), 
              &error );
-
-    cout << "Triangulation: " << error << endl;
+    
+    if(error<0)
+    {
+        cout << "Error encountered in triangulation routine: " << error << endl;
+        exit(EXIT_FAILURE);
+    }
 }
 
 SphericalSplineInterpolator::~SphericalSplineInterpolator()
@@ -147,7 +152,7 @@ SphericalSplineInterpolator::~SphericalSplineInterpolator()
 
 }
 
-void SphericalSplineInterpolator::InterpolateC0(int n, float *queryLons, float *queryLats, float *results)
+void SphericalSplineInterpolator::InterpolateC0(int n, double *queryLons, double *queryLats, double *results)
 {
     int ist = 1; /* start from first triangle vertex */
     int ier = 0; /* error reporter */
@@ -155,8 +160,8 @@ void SphericalSplineInterpolator::InterpolateC0(int n, float *queryLons, float *
     int ierSum = 0;
     for(int i=0; i<n; i++)
     {
-        float plon = queryLons[i];
-        float plat = queryLats[i];
+        double plon = queryLons[i];
+        double plat = queryLats[i];
         
         intrc0_( &m_numNodes, 
                  &plat, 
@@ -174,6 +179,108 @@ void SphericalSplineInterpolator::InterpolateC0(int n, float *queryLons, float *
         ierSum += ier;
     }
 
-    cout << "Interpolation: " << ierSum/n << endl;
+    if(ierSum/n)
+    {
+        cout << "Error encountered in interpolation routine: " << ierSum/n << endl;
+        exit(EXIT_FAILURE);
+    }
+}
+
+void SphericalSplineInterpolator::InterpolateC1(int n, double *queryLons, double *queryLats, double *results)
+{
+    int iflgs = 0; /* uniform tension */
+    int iflgg = 0; /* gradient flag */
+    int ist = 1; /* start from first triangle vertex */
+    int ier = 0; /* error reporter */
+    
+    vector<double> grad(m_numNodes*3);
+    vector<double> sigma(m_numNodes*6);
+    
+    fill(grad.begin(), grad.end(), 0);
+    fill(sigma.begin(), sigma.end(), 0);
+
+    /*-----------------------------------------------------------------------------
+     * Compute gradients and variable tension 
+     *-----------------------------------------------------------------------------*/
+    int itergs = 10;
+    int maxit = 10;
+    double dgmax = 1e-7;
+    double tol = 0.001;
+    
+    for(int iter=0; iter<itergs; iter++)
+    {
+        double dsmax = 0;
+        int nit = maxit;
+        double dgmx = dgmax;
+        gradg_( &m_numNodes, 
+                m_xs.data(), 
+                m_ys.data(), 
+                m_zs.data(), 
+                m_vals.data(), 
+                m_list.data(), 
+                m_lptr.data(), 
+                m_lend.data(),                 
+                &iflgs, 
+                sigma.data(), 
+                &nit, 
+                &dgmx, 
+                grad.data(), 
+                &ier );
+        
+        if(ier<0) cout << "Error in gradg_" << endl;
+        fprintf (stderr, "%s: GRADG (iteration %d):  tolerance = %g max change = %g  maxit = %d no. iterations = %d ier = %d\n",
+					"SphericalSplineInterpolator", iter, dgmax, dgmx, maxit, nit, ier);
+        iflgs = 1; /* We want to apply variable tension */
+        getsig_( &m_numNodes, 
+                 m_xs.data(), 
+                 m_ys.data(), 
+                 m_zs.data(),         
+                 m_vals.data(), 
+                 m_list.data(), 
+                 m_lptr.data(), 
+                 m_lend.data(),                     
+                 grad.data(), 
+                 &tol, 
+                 sigma.data(), 
+                 &dsmax, 
+                 &ier );
+        
+        if(ier<0) cout << "Error in getsig_" << endl;
+    }
+
+    int ierSum = 0;
+    iflgs = 1; /* variable tension */
+    iflgg = 1; /* gradient provided */
+    for(int i=0; i<n; i++)
+    {
+        double plon = queryLons[i];
+        double plat = queryLats[i];
+
+        
+        intrc1_( &m_numNodes, 
+                 &plat, 
+                 &plon, 
+                 m_xs.data(), 
+                 m_ys.data(), 
+                 m_zs.data(), 
+                 m_vals.data(), 
+                 m_list.data(), 
+                 m_lptr.data(), 
+                 m_lend.data(), 
+                 &iflgs, 
+                 sigma.data(), 
+                 &iflgg, 
+                 grad.data(), 
+                 &ist, 
+                 &(results[i]), 
+                 &ier );        
+        ierSum += ier;
+    }
+
+    if(ierSum/n)
+    {
+        cout << "Error encountered in interpolation routine: " << ierSum/n << endl;
+        exit(EXIT_FAILURE);
+    }
 }
 
