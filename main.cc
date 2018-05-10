@@ -90,7 +90,7 @@ int main(int argc, char **argv)
 {
     if(argc != 3)
     {
-        cout << "\nUsage: ./sphericalinterpolate <triplet-data-file> <output-file> \n\nNote: data-file should have the format <lon lat val>. Angles should be in degrees. Latitudes should be within [-PI/2, PI/2]. Longitudes should be within [0, 2*PI]" << endl;
+        cout << "\nUsage: ./sphericalinterpolate <triplet-data-file> <output-file> \n\nNote: data-file should have the format <lon lat val>. Latitudes should be within [-PI/2, PI/2]. Longitudes should be within [0, 2*PI]" << endl;
         return 0;
     }
 
